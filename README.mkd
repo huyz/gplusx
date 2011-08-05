@@ -1,5 +1,5 @@
-gplus-ext-sdk
-=============
+GPlusX
+======
 
 This is an SDK for quickly and robustly writing extensions for the fickle
 Google+ web pages.
