@@ -227,10 +227,10 @@ GpxMap.prototype.update = function() {
 
               e('postComments_c', this.next(), function() {
                 // NOTE: we can't look inside these divs coz there may not be any comments; we'll look below
-                e('postCommentsOld_c', this.children(':eq(0)'), function() {
+                e('postCommentsOld_cc', this.children(':eq(0)'), function() {
                 });
                 e('postCommentsShown_c', this.children(':eq(1)'));
-                e('postCommentsMore_c', this.children(':eq(2)'), function() {
+                e('postCommentsMore_cc', this.children(':eq(2)'), function() {
                   e('postCommentsClickArea_cc', this.children(':eq(0)')); // Class is shared with Old
                   e('postCommentsMoreLeftEdge_c', this.children(':eq(1)'));
                 });
@@ -274,6 +274,7 @@ GpxMap.prototype.update = function() {
     * Path Combos that give more context
     */
 
+  s.gbarToolsProfileEmail       = s.gbarToolsProfileName + ' > ' + s.gbarToolsProfileEmail_c 
   s.gbarLinksList               = s.gbarLinks           + ' > ' + s.gbarList_c;
   s.gbarLinksListItem           = s.gbarLinksList       + ' > ' + s.gbarListItem_c;
   s.gbarToolsList               = s.gbarTools           + ' > ' + s.gbarList_c;
