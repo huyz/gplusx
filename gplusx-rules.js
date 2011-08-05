@@ -16,11 +16,11 @@ GpxMap.prototype.update = function() {
   var _this = this;
 
   /**
-   * function(key, $el, callback)
+   * extract: function(key, $el, callback)
    * Extracts selector and classnames for the given key from the specified
    * element.
    * Only the first element will be looked at.
-   * @param callback: Optional callback to call with this set to $el
+   * @param callback: Optional callback to call with 'this' set to $el
    *   for convenience.
    */
   function e() {
@@ -28,22 +28,22 @@ GpxMap.prototype.update = function() {
   }
 
   /**
-   * function(key, $el, selector, callback, addClassSelectors):
+   * extractWithSelector: function(key, $el, selector, callback, addClassSelectors):
    * Extracts selector and classnames for the given key from the specified
    * element where you've already decided on a selector.
    * Only processes the first element passed in.
    * Example selectors: '#id' or '[role="button"]' or 'span[role="menu"]'
-   * @param callback: Optional callback to call with this set to $el
+   * @param callback: Optional callback to call with 'this' set to $el
    *   for convenience.
    * @param addClassSelectors: If true, makes selector even more specific by adding
-   *   classes.  This is useful in cases when the selector is fine within
+   *   classes.
    */
   function es() {
     _this.extractWithSelector.apply(_this, arguments);
   }
 
   /**
-   * Convenience method that calls jQuery on the selector and then
+   * extractCallingJQuery: Convenience method that calls jQuery on the selector and then
    * calls es().
    * Good for #id because it doesn't require a context, so this
    * calls jQuery for you.
@@ -165,7 +165,7 @@ GpxMap.prototype.update = function() {
     e('postsStream', $posts.first().parent());
 
     // Go through all the posts on the page
-    var lastClass = null;
+    var lastClassName = null;
     var last = null;
     var canonClassesFound = false,
         placeholderFound = false,
@@ -174,10 +174,10 @@ GpxMap.prototype.update = function() {
       // Looking for 2 similar matches in a row because
       // an item that is selected will have different classes
       if (! canonClassesFound) {
-        if (lastClass === null) {
-          lastClass = el.className;
+        if (lastClassName === null || lastClassName !== el.className) {
+          lastClassName = el.className;
           last = el;
-        } else if (lastClass == el.className) {
+        } else if (lastClassName == el.className) {
           canonClassesFound = true;
         }
       }
