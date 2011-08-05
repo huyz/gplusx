@@ -1,19 +1,57 @@
+/*
+ * GPlusX - Google+ Extension SDK
+ *
+ * This file contains all the rules for extracting selectors and classnames for all
+ * parts of the Google+ page.
+ */
 
 GpxMap.prototype.update = function() {
   var s = this.s = {};
   var c = this.c = {};
 
-  // Aliases
+  /*
+   * Aliases
+   */
+
   var _this = this;
+
+  /**
+   * function(key, $el, callback)
+   * Extracts selector and classnames for the given key from the specified
+   * element.
+   * Only the first element will be looked at.
+   * @param callback: Optional callback to call with this set to $el
+   *   for convenience.
+   */
   function e() {
     _this.extract.apply(_this, arguments);
   }
+
+  /**
+   * function(key, $el, selector, callback, addClassSelectors):
+   * Extracts selector and classnames for the given key from the specified
+   * element where you've already decided on a selector.
+   * Only processes the first element passed in.
+   * Example selectors: '#id' or '[role="button"]' or 'span[role="menu"]'
+   * @param callback: Optional callback to call with this set to $el
+   *   for convenience.
+   * @param addClassSelectors: If true, makes selector even more specific by adding
+   *   classes.  This is useful in cases when the selector is fine within
+   */
   function es() {
     _this.extractWithSelector.apply(_this, arguments);
   }
+
+  /**
+   * Convenience method that calls jQuery on the selector and then
+   * calls es().
+   * Good for #id because it doesn't require a context, so this
+   * calls jQuery for you.
+   */
   function ej() {
     _this.extractCallingJQuery.apply(_this, arguments);
   }
+
   function debug() {
     Gpx.fn.debug.apply(undefined, arguments);
   }
@@ -23,8 +61,8 @@ GpxMap.prototype.update = function() {
   }
 
   /*
-    * Gbar
-    */
+   * Gbar
+   */
 
   var $gbarParent;
 
@@ -233,15 +271,15 @@ GpxMap.prototype.update = function() {
   }
 
   /*
-    * Path Combos that give morecontext
+    * Path Combos that give more context
     */
 
-  s.gbarLinksList               = s.gbarLinks + ' > ' + s.gbarList_c;
-  s.gbarLinksListItem           = s.gbarLinksList + ' > ' + s.gbarListItem_c;
-  s.gbarToolsList               = s.gbarTools + ' > ' + s.gbarList_c;
-  s.gbarToolsListItem           = s.gbarToolsList + ' > ' + s.gbarListItem_c;
-  s.postCommentsOldClickArea_c  = s.postCommentsOld_c + ' > ' + s.postCommentsClickArea_cc;
-  s.postCommentsMoreClickArea_c = s.postCommentsMore_c + ' > ' + s.postCommentsClickArea_cc;
+  s.gbarLinksList               = s.gbarLinks           + ' > ' + s.gbarList_c;
+  s.gbarLinksListItem           = s.gbarLinksList       + ' > ' + s.gbarListItem_c;
+  s.gbarToolsList               = s.gbarTools           + ' > ' + s.gbarList_c;
+  s.gbarToolsListItem           = s.gbarToolsList       + ' > ' + s.gbarListItem_c;
+  s.postCommentsOldClickArea_c  = s.postCommentsOld_c   + ' > ' + s.postCommentsClickArea_cc;
+  s.postCommentsMoreClickArea_c = s.postCommentsMore_c  + ' > ' + s.postCommentsClickArea_cc;
 
   /*
     * These need to be done carefully with delay, as they're injected later

@@ -1,5 +1,10 @@
+/*
+ * GPlusX - Google+ Extension SDK
+ */
+
 // Requires jQuery internally but you don't have to use it yourself.
 
+/*
 (function(window) {
 
 var $ = jQuery;
@@ -8,6 +13,7 @@ var $ = jQuery;
 var document = window.document,
     navigator = window.navigator,
     location = window.location;
+*/
 
 var Gpx = function(key, context) {
 };
@@ -70,10 +76,12 @@ GpxMap.prototype = {
   },
 
   /**
-    * Only the first element will be looked at.
-    * @param callback: Optional callback to call with this set to $el
-    *   for convenience.
-    */
+   * Extracts selectors and classnames for the given key from the specified
+   * element.
+   * Only the first element will be looked at.
+   * @param callback: Optional callback to call with this set to $el
+   *   for convenience.
+   */
   extract: function(key, $el, callback) {
     if (! $el.length) {
       error(key);
@@ -118,14 +126,17 @@ GpxMap.prototype = {
       callback.call($el);
     return true;
   },
+
   /**
-    * Only processes the first element passed in.
-    * Example selectors: '#id' or '[role="button"]' or 'span'
-    * @param callback: Optional callback to call with this set to $el
-    *   for convenience.
-    * @param addClassSelectors: If true, makes selector even more specific by adding
-    *   classes.  This is useful in cases when the selector is fine within
-    */
+   * Extracts selector and classnames for the given key from the specified
+   * element where you've already decided on a selector.
+   * Only processes the first element passed in.
+   * Example selectors: '#id' or '[role="button"]' or 'span[role="menu"]'
+   * @param callback: Optional callback to call with this set to $el
+   *   for convenience.
+   * @param addClassSelectors: If true, makes selector even more specific by adding
+   *   classes.  This is useful in cases when the selector is fine within
+   */
   extractWithSelector: function(key, $el, selector, callback, addClassSelectors) {
     if (! $el.length) {
       error(key);
@@ -146,8 +157,10 @@ GpxMap.prototype = {
   },
 
   /**
-   * Convenience method that calls jQuery on the selector.
-   * Great for #id
+   * Convenience method that calls jQuery on the selector and then
+   * calls extractWithSelector().
+   * Good for #id because it doesn't require a context, so this
+   * calls jQuery for you.
    */
   extractCallingJQuery: function(key, selector, callback, addClassSelectors) {
     return this.extractWithSelector(key, $(selector), selector, callback, addClassSelectors);
@@ -379,9 +392,10 @@ for (var i in Gpx.prototype) {
   }
 }
 
+/*
 // Expose jQuery to the global object
 window.Gpx = Gpx;
 })(window);
-
+*/
 
 // vim:set ai et sts=2 sw=2 tw=0:
