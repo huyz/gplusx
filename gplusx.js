@@ -354,7 +354,8 @@ Gpx.fn = Gpx.prototype = {
 
   getProfile: function() {
     return {
-      name: this.find$('gbarToolsProfileNameText').text()
+      name: this.find$('gbarToolsProfileNameText').text(),
+      email: this.find$('gbarToolsProfileEmail').text()
     };
   },
 
@@ -367,12 +368,12 @@ Gpx.fn = Gpx.prototype = {
   },
 
   getPosts$: function() {
-    return this.stream$.children('[id^="update-"]');
+    return this.find$('post');
   },
 
   // Extended version of posts$
   getPostsX$: function() {
-    return this.stream$.children('[id^="update-"],[id^="sgp-post-"]');
+    return this.getStream$.children('[id^="update-"],[id^="sgp-post-"]');
   }
 
 };
