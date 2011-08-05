@@ -1,5 +1,5 @@
 
-GplusMap.prototype.update: function() {
+GpxMap.prototype.update = function() {
   var s = this.s = {};
   var c = this.c = {};
 
@@ -15,10 +15,10 @@ GplusMap.prototype.update: function() {
     _this.extractCallingJQuery.apply(_this, arguments);
   }
   function debug() {
-    GPlus.fn.debug.apply(undefined, arguments);
+    Gpx.fn.debug.apply(undefined, arguments);
   }
   function error(key) {
-    GPlus.fn.error.call(undefined, "Error while digging for '" + key + "'");
+    Gpx.fn.error.call(undefined, "Error while digging for '" + key + "'");
     console.trace();
   }
 
@@ -70,7 +70,7 @@ GplusMap.prototype.update: function() {
   ej('gbarToolsGearPullDown', '#gbd5');
 
   /*
-    * GPlusBar
+    * GpxBar
     */
 
   e('gplusBarBg', $gbarParent.next(), function() {
