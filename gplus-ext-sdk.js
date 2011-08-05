@@ -1,5 +1,4 @@
 // Requires jQuery internally but you don't have to use it yourself.
-// OO structure based on jQuery.
 
 (function(window) {
 
