@@ -244,7 +244,7 @@ GpxMap.prototype = {
 Gpx.fn = Gpx.prototype = {
   // Current version of Gpx being used
   gplusx: '0.1.0',
-  STORAGE_PREFIX: 'GpxExtSDK_',
+  STORAGE_PREFIX: 'GPlusX_',
 
   map: new GpxMap(),
 
