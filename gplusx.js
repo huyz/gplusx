@@ -243,7 +243,7 @@ GpxMap.prototype = {
 
 Gpx.fn = Gpx.prototype = {
   // Current version of Gpx being used
-  gplus: '0.1.0',
+  gplusx: '0.1.0',
   STORAGE_PREFIX: 'GpxExtSDK_',
 
   map: new GpxMap(),
@@ -254,12 +254,12 @@ Gpx.fn = Gpx.prototype = {
 
   debug: function() {
     var args = Array.prototype.slice.call(arguments);
-    args.unshift('gplus');
+    args.unshift('GPlusX');
     console.debug(args);
   },
   error: function() {
     var args = Array.prototype.slice.call(arguments);
-    args.unshift('gplus');
+    args.unshift('GPlusX');
     console.error(args);
   },
 
@@ -312,8 +312,8 @@ Gpx.fn = Gpx.prototype = {
     });
   },
   updateFromFile: function(file, callback) {
-    this.updateFromURL(chrome.extension.getURL('/gplus-ext-sdk/gplus-selectors.json', function() {
-      this.updateFromURL(chrome.extension.getURL('/gplus-ext-sdk/gplus-classnames.json', function() {
+    this.updateFromURL(chrome.extension.getURL('/gplusx/gplus-selectors.json', function() {
+      this.updateFromURL(chrome.extension.getURL('/gplusx/gplus-classnames.json', function() {
         callback();
       });
     });
@@ -361,6 +361,10 @@ Gpx.fn = Gpx.prototype = {
 
   getGbar$: function() {
     return this.find$('gbar');
+  },
+
+  getGplusBar$: function() {
+    return this.find$('gplusBar');
   },
 
   getStream$: function() {
