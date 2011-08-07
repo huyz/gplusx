@@ -5,7 +5,7 @@
 # parts of the Google+ page.
 #
 
-GpxMap::update = (mode) ->
+gplusxMappingRules = (mode) ->
   s = @s = {}
   c = @c = {}
   @mode = mode
@@ -16,9 +16,9 @@ GpxMap::update = (mode) ->
 
   _this = this
   debug = ->
-    GpxMap.debug.apply undefined, arguments
+    WebXMap.debug.apply undefined, arguments
   error = ->
-    GpxMap.error.apply undefined, arguments
+    WebXMap.error.apply undefined, arguments
 
   # extract: function(key, $el, callback)
   # Extracts selector and classnames for the given key from the specified
@@ -62,7 +62,7 @@ GpxMap::update = (mode) ->
     e 'gbarParent', this.parent
 
     #
-    # GpxBar
+    # WebXBar
     #
 
     # FIXME: there's a different kind of bar in the Settings page

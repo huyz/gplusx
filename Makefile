@@ -3,7 +3,7 @@
 # Compiles CoffeeScript files into JavaScript
 
 COFFEE = coffee
-COFFEEFLAGS =
+COFFEEFLAGS = --bare
 
 COFFEE_TARGETS := $(patsubst %.coffee,%.js,$(wildcard *.coffee))
 
