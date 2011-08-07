@@ -4,16 +4,14 @@
 
 COFFEE = coffee
 COFFEEFLAGS = --bare
-COFFEE_HEADER = \n\
-/****************************************************************************\n\
+COFFEE_HEADER = \n/****************************************************************************\n\
  * GPlusX mapping rules.\n\
  * File was generated from CoffeeScript.\n\
  ****************************************************************************/\n\n
 
-GPLUSX_HEADER = \n\
-/****************************************************************************\n\
+GPLUSX_HEADER = \n/****************************************************************************\n\
  * GPlusX + WebXDK\n\
- * File was combined from multiple input files.\n\
+ * File was combined from multiple input files by 'make'.\n\
  ****************************************************************************/\n\n
 
 
