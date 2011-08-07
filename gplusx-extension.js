@@ -1,9 +1,14 @@
 /****************************************************************************
- * Main
+ * GPlusX standalone browser extension
  ***************************************************************************/
     
+// Main
 $(document).ready(function() {
-  var gpx = new GPlusX(gplusxMappingRules);
+  var gpx = new GPlusX({
+    mapIdFunc: gplusxMapIdFunc,
+    mappingRulesForId: gplusxMappingRulesForId,
+    mappingRules: gplusxMappingRules
+  );
   gpx.surveyRules();
   gpx.wxMap.saveMap();
 

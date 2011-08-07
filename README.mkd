@@ -51,8 +51,6 @@ Essentially, you have 2 levels of inclusion:
           "matches" : ["http://plus.google.com/*", "https://plus.google.com/*"],
           "js": [
             "gplusx/webxdk/jquery.js",
-            "gplusx/webxdk/webxdk.js",
-            "gplusx/gplusx-rules.js",
             "gplusx/gplusx.js",
             "YOUR_OWN_CONTENT_SCRIPT.js"],
           "run_at": "document_start"

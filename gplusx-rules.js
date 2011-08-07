@@ -1,4 +1,28 @@
-var gplusxMappingRules;
+
+ /****************************************************************************
+ * GPlusX mapping rules.
+ * File was generated from CoffeeScript.
+ ****************************************************************************/
+
+
+var gplusxMapIdFunc, gplusxMappingRules, gplusxMappingRulesForId;
+gplusxMapIdFunc = function() {
+  if (this.s.gbarParent != null) {
+    return this.s.gbarParent + (this.s.gplusBar != null ? this.s.gplusBar : '');
+  } else {
+    return null;
+  }
+};
+gplusxMappingRulesForId = function() {
+  ej('gbar', '#gb', function() {
+    return e('gbarParent', this.parent(), function() {
+      return e('gplusBarBg', this.next(), function() {
+        return e('gplusBar', this.children());
+      });
+    });
+  });
+  return;
+};
 gplusxMappingRules = function(mode) {
   var $posts, c, debug, e, ej, error, es, nonPlaceholderFound, placeholderFound, s, _this;
   s = this.s = {};
@@ -30,18 +54,19 @@ gplusxMappingRules = function(mode) {
     return _this.extractCallingJQuery.apply(_this, args);
   };
   ej('gbar', '#gb', function() {
-    e('gbarParent', this.parent);
-    return e('gplusBarBg', this.next(), function() {
-      return e('gplusBar', this.children(), function() {
-        return e('gplusBarNav', this.find('[role="navigation"]'), function() {
-          return e('gplusBarNavStreamA', this.children('a:first-child'), function() {
-            e('gplusBarNavStreamIcon_c', this.children());
-            return e('gplusBarNavPhotosA', this.next(), function() {
-              e('gplusBarNavPhotosIcon_c', this.children());
-              return e('gplusBarNavProfileA', this.next(), function() {
-                e('gplusBarNavProfileIcon_c', this.children());
-                return e('gplusBarNavCirclesA', this.next(), function() {
-                  return e('gplusBarNavCirclesIcon_c', this.children());
+    return e('gbarParent', this.parent(), function() {
+      return e('gplusBarBg', this.next(), function() {
+        return e('gplusBar', this.children(), function() {
+          return e('gplusBarNav', this.find('[role="navigation"]'), function() {
+            return e('gplusBarNavStreamA', this.children('a:first-child'), function() {
+              e('gplusBarNavStreamIcon_c', this.children());
+              return e('gplusBarNavPhotosA', this.next(), function() {
+                e('gplusBarNavPhotosIcon_c', this.children());
+                return e('gplusBarNavProfileA', this.next(), function() {
+                  e('gplusBarNavProfileIcon_c', this.children());
+                  return e('gplusBarNavCirclesA', this.next(), function() {
+                    return e('gplusBarNavCirclesIcon_c', this.children());
+                  });
                 });
               });
             });
@@ -164,5 +189,5 @@ gplusxMappingRules = function(mode) {
   ej('gbarToolsNotificationPullDown', '#gbwc');
   ej('gbarToolsNotificationFrame', '#gbsf');
   e('postMenu', $posts.first().find('[role="menu"]'));
-  return null;
+  return;
 };

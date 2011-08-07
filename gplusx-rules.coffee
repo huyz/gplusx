@@ -1,10 +1,29 @@
-#
+# ***************************************************************************
 # GPlusX - Google+ Extension SDK
 #
 # This file contains all the rules for extracting selectors and classnames for all
 # parts of the Google+ page.
-#
+# ***************************************************************************
 
+# Returns a unique ID for this set of mapping;
+# null, if there aren't enough mappings to generate an ID
+gplusxMapIdFunc = () ->
+  if @s.gbarParent?
+    # The settings page has no gplusbar, but I hesitate to only take
+    # one element's className as an ID
+    @s.gbarParent + if @s.gplusBar? then @s.gplusBar else ''
+  else
+    null
+
+# Executes just the rules sufficient for generating an ID
+gplusxMappingRulesForId = () ->
+  ej 'gbar', '#gb', ->
+    e 'gbarParent', @parent(), ->
+      e 'gplusBarBg', @next(), ->
+        e 'gplusBar', @children()
+  undefined
+
+# Executes rules to extract selectors and CSS class names
 gplusxMappingRules = (mode) ->
   s = @s = {}
   c = @c = {}
@@ -59,34 +78,34 @@ gplusxMappingRules = (mode) ->
   #
 
   ej 'gbar', '#gb', ->
-    e 'gbarParent', this.parent
+    e 'gbarParent', @parent(), ->
 
-    #
-    # WebXBar
-    #
+      #
+      # WebXBar
+      #
 
-    # FIXME: there's a different kind of bar in the Settings page
-    e 'gplusBarBg', @next(), ->
-      e 'gplusBar', @children(), ->
+      # FIXME: there's a different kind of bar in the Settings page
+      e 'gplusBarBg', @next(), ->
+        e 'gplusBar', @children(), ->
 
-        e 'gplusBarNav', @find('[role="navigation"]'), ->
-  # Too early for Aria
-  #e('gplusBarNavHomeA', $_ = $('[aria-label="Home"]'));
-  #e('gplusBarNavHomeIcon_c', $_.children());
-  #e('gplusBarNavPhotosA', $_ = $('[aria-label="Photos"]'));
-  #e('gplusBarNavPhotosIcon_c', $_.children());
-  #e('gplusBarNavProfileA', $_ = $('[aria-label="Profile"]'));
-  #e('gplusBarNavProfileIcon_c', $_.children());
-  #e('gplusBarNavCirclesA', $_ = $('[aria-label="Circles"]'));
-  #e('gplusBarNavCirclesIcon_c', $_.children());
-          e 'gplusBarNavStreamA', @children('a:first-child'), ->
-            e 'gplusBarNavStreamIcon_c', @children()
-            e 'gplusBarNavPhotosA', @next(), ->
-              e 'gplusBarNavPhotosIcon_c', @children()
-              e 'gplusBarNavProfileA', @next(), ->
-                e 'gplusBarNavProfileIcon_c', @children()
-                e 'gplusBarNavCirclesA', @next(), ->
-                  e 'gplusBarNavCirclesIcon_c', @children()
+          e 'gplusBarNav', @find('[role="navigation"]'), ->
+    # Too early for Aria
+    #e('gplusBarNavHomeA', $_ = $('[aria-label="Home"]'));
+    #e('gplusBarNavHomeIcon_c', $_.children());
+    #e('gplusBarNavPhotosA', $_ = $('[aria-label="Photos"]'));
+    #e('gplusBarNavPhotosIcon_c', $_.children());
+    #e('gplusBarNavProfileA', $_ = $('[aria-label="Profile"]'));
+    #e('gplusBarNavProfileIcon_c', $_.children());
+    #e('gplusBarNavCirclesA', $_ = $('[aria-label="Circles"]'));
+    #e('gplusBarNavCirclesIcon_c', $_.children());
+            e 'gplusBarNavStreamA', @children('a:first-child'), ->
+              e 'gplusBarNavStreamIcon_c', @children()
+              e 'gplusBarNavPhotosA', @next(), ->
+                e 'gplusBarNavPhotosIcon_c', @children()
+                e 'gplusBarNavProfileA', @next(), ->
+                  e 'gplusBarNavProfileIcon_c', @children()
+                  e 'gplusBarNavCirclesA', @next(), ->
+                    e 'gplusBarNavCirclesIcon_c', @children()
 
   ej 'gbarTop', '#gbw'
 
@@ -245,6 +264,4 @@ gplusxMappingRules = (mode) ->
   #
   # End
   #
-  null
-
-# vim:set foldmethod=indent:
+  undefined
