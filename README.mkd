@@ -1,8 +1,8 @@
 GPlusX
 ======
 
-This is an API for quickly and robustly writing extensions for the fickle
-Google+ web pages.
+This is a library with an API for quickly and robustly writing extensions for
+the fickle Google+ web pages.
 
 ## Organization
 
@@ -17,7 +17,7 @@ Essentially, you have 2 levels of inclusion:
 2. The GPlusX API includes the WebXDK, which is a library offering
    functionality for all types of web applications.
 
-## Installation
+## To use this library
 
 ### a) Either download as an archive
 
@@ -42,9 +42,7 @@ Essentially, you have 2 levels of inclusion:
 
 ### Setup
 
-3. Run `make`.
-
-4. Add needed files to your list of content\_scripts in your extension's
+3. Add needed files to your list of content\_scripts in your extension's
    `manifest.json`. For example:
 
     ```
@@ -60,6 +58,31 @@ Essentially, you have 2 levels of inclusion:
         } 
       ],
     ```
+
+## To contribute to this library
+
+### Fork this project
+
+Go to Github, fork this project, and clone it to your local machine, replacing
+whatever copy you may already have.
+
+### Install CoffeeScript
+
+Mapping rules are written in
+[CoffeeScript](http://jashkenas.github.com/coffee-script)
+for its conciseness. To add or modify rules, you'll need to install the CoffeeScript compiler.
+
+### Add/edit rules
+
+Go to the wiki to learn how to
+[add mapping rules to GPlusX](https://github.com/huyz/gplusx/wiki/How-to-add-mapping-rules-to-GPlusX).
+
+Whenever you make changes to `gplusx-rules.coffee`, run `make`.
+
+### Contribute rules to the main project
+
+Request pulls back into the upstream repository.  Your contributions are much
+appreciated.
 
 ## TODO
 
