@@ -1,9 +1,59 @@
 GPlusX
 ======
 
-This is an SDK for quickly and robustly writing extensions for the fickle
+This is an API for quickly and robustly writing extensions for the fickle
 Google+ web pages.
 
-Right now, only Chrome is supported.
+## Installation
 
+As part of the installation, this API also requires the inclusion of
+[WebXDK](https://github.com/huyz/webxdk), the Web Extension Development Kit.
 
+### a) Either download as an archive
+
+1.  Go to [Downloads](https://github.com/huyz/gplusx/archives/master) and
+   download the latest.
+
+2.  Extract into your extension's root directory.
+
+### b) Or download latest copy via github
+
+1.  Go to your extension's root directory.
+
+2.  Depending on whether you're using Git for your own extension:
+
+    a.  If your extension is not a Git repo, clone the Git repository
+
+            git clone git@github.com:huyz/webxdk.git
+
+    b.  If your extension is in a Git repo, add as a submodule to your repository:
+
+            git submodule add git@github.com:huyz/gplusx.git
+
+### Setup
+
+3. Run `make`.
+
+4. Add needed files to your list of content\_scripts in your extension's
+   `manifest.json`. For example:
+
+    ```
+      "content_scripts": [
+        {
+          "matches" : ["http://plus.google.com/*", "https://plus.google.com/*"],
+          "js": [
+            "gplusx/webxdk/jquery.js",
+            "gplusx/gplusx.js",
+            "gplusx/gplusx-rules.js",
+            "YOUR_OWN_CONTENT_SCRIPT.js"],
+          "run_at": "document_start"
+        } 
+      ],
+    ```
+
+## TODO
+
+- Right now, only Chrome is supported.  Porting to other browsers is planned.
+
+- Right now, requires jQuery.  To be universal and lightweight, the SDK needs
+  to be weaned off jQuery.

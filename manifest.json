@@ -1,0 +1,36 @@
+{
+  "name": "GPlusX",
+  "version": "0.1",
+  "minimum_chrome_version": "13",
+
+  "description": "Extracts mappings from Google+ and rule dependencies from its own code",
+  "icons": { "16": "icons/icon16.png",
+             "48": "icons/icon48.png",
+            "128": "icons/icon128.png" },  
+
+  "browser_action": {
+     "default_icon": "icons/actions/1.png",
+     "default_title": "GPlusX"
+  },
+
+  "content_scripts": [
+    {
+      "matches" : ["http://plus.google.com/*", "https://plus.google.com/*"],
+      "js": [
+	"webxdk/jquery.js",
+	"webxdk/webxdk.js",
+	"gplusx-rules.js",
+        "gplusx-extension.js"
+	],
+      "run_at": "document_start"
+    }
+  ],
+
+  "permissions": [
+    "http://plus.google.com/*",
+    "https://plus.google.com/*",
+    "tabs"
+  ],
+
+  "homepage_url": "http://github.com/huyz/gplusx"
+}
