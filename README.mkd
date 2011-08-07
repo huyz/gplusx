@@ -42,7 +42,7 @@ Essentially, you have 2 levels of inclusion:
 
 ### Setup
 
-3. Add needed files to your list of content\_scripts in your extension's
+1. Add needed files to your list of content\_scripts in your extension's
    `manifest.json`. For example:
 
     ```
@@ -57,6 +57,9 @@ Essentially, you have 2 levels of inclusion:
         } 
       ],
     ```
+
+2. If you also inject your JS files from within your background page, then
+   don't forget to modify it as well.
 
 ## To contribute to this library
 
