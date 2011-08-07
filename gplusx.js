@@ -41,17 +41,4 @@ GPlusX.prototype = {
   }
 }
 
-// Create non-jQuery functions
-for (var i in GPlusX.prototype) {
-  if (GPlusX.prototype.hasOwnProperty(i)) {
-    var fn = GPlusX.prototype[i];
-    var fnName = GPlusX.prototype[i].toString();
-    if (fnName.charAt(fnName.length - 1) === '$') {
-      (function(fn) {
-        GPlusX.prototype[fnName.substring(0, fnName.length - 1)] = function() {
-          return fn.apply(this, arguments).get();
-        };
-      })(fn);
-    }
-  }
-}
+GPlusX.createNonJQueryFunctions();
