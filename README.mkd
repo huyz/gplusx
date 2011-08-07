@@ -28,7 +28,7 @@ As part of the installation, this API also requires the inclusion of
 
     b.  If your extension is in a Git repo, add as a submodule to your repository:
 
-            git submodule add git@github.com:huyz/gplusx.git
+            git submodule add git@github.com:huyz/webxdk.git
 
 ### Setup
 
