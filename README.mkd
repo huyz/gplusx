@@ -4,10 +4,20 @@ GPlusX
 This is an API for quickly and robustly writing extensions for the fickle
 Google+ web pages.
 
-## Installation
+## Organization
 
 As part of the installation, this API also requires the inclusion of
 [WebXDK](https://github.com/huyz/webxdk), the Web Extension Development Kit.
+
+Essentially, you have 2 levels of inclusion:
+
+1. Your extension includes this GPlusX API, which is a library offering
+   functionality specifically for Google+.
+
+2. The GPlusX API includes the WebXDK, which is a library offering
+   functionality for all types of web applications.
+
+## Installation
 
 ### a) Either download as an archive
 
