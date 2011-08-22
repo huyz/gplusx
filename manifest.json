@@ -14,7 +14,7 @@
     {
       "matches" : ["http://plus.google.com/*", "https://plus.google.com/*"],
       "js": [
-	"webxdk/jquery.js",
+	"webxdk/jquery-1.6.2.js",
 	"webxdk/webx.js",
 	"gplusx.js",
         "gplusx-extension.js"
