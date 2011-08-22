@@ -6,47 +6,54 @@
  ****************************************************************************/
 
 function GPlusX(config) {
-  // Inherit all the WebX properties
-  for (var i in WebX) {
-    this[i] = WebX[i];
-  }
-
-  this.config = config;
+  WebX.call(this, config);
 }
 
-GPlusX.prototype = {
+GPlusX.debug = function() {
+    var args = Array.prototype.slice.call(arguments);
+      args.unshift('GPlusX:');
+        console.debug.apply(console, args);
+};
 
-  getProfile: function() {
-    return {
-      name: this.find$('gbarToolsProfileNameText').text(),
-      email: this.find$('gbarToolsProfileEmail').text()
-    };
-  },
+GPlusX.error = function() {
+    var args = Array.prototype.slice.call(arguments);
+      args.unshift('GPlusX:');
+        console.error.apply(console, args);
+};
 
-  getNotificationCount: function() {
-    return this.find$('gbarToolsNotificationUnitFg').text();
-  },
+GPlusX.prototype = new WebX;
 
-  getGbar$: function() {
-    return this.find$('gbar');
-  },
 
-  getGplusBar$: function() {
-    return this.find$('gplusBar');
-  },
+GPlusX.prototype.getProfile = function() {
+  return {
+    name: this.find$('gbarToolsProfileNameText').text(),
+    email: this.find$('gbarToolsProfileEmail').text()
+  };
+};
 
-  getStream$: function() {
-    return this.find$('postsStream');
-  },
+GPlusX.prototype.getNotificationCount = function() {
+  return this.find$('gbarToolsNotificationUnitFg').text();
+};
 
-  getPosts$: function() {
-    return this.find$('post');
-  },
+GPlusX.prototype.getGbar$ = function() {
+  return this.find$('gbar');
+};
 
-  // Extended version of posts$
-  getPostsX$: function() {
-    return this.find$(this.map.s.post + ',[id^="sgp-post-"]');
-  }
-}
+GPlusX.prototype.getGplusBar$ = function() {
+  return this.find$('gplusBar');
+};
 
-GPlusX.createNonJQueryFunctions();
+GPlusX.prototype.getStream$ = function() {
+  return this.find$('postsStream');
+};
+
+GPlusX.prototype.getPosts$ = function() {
+  return this.find$('post');
+};
+
+// Extended version of posts$
+GPlusX.prototype.getPostsX$ = function() {
+  return this.find$(this.map.s.post + ',[id^="sgp-post-"]');
+};
+
+WebX.createNonJQueryFunctions.call(GPlusX);

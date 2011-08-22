@@ -1,0 +1,7 @@
+#!/usr/bin/perl -w
+# huyz 2011-08-21
+# Compiles our own flavor of CoffeeScript to minimize characters.
+# It's very basic and only handles cases of simple syntax.
+# It would be best to modify CoffeeScript's parser instead.
+
+s/(?<!@)@\(/@(-> /g;
