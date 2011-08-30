@@ -1,7 +1,6 @@
 # GPlusX - Google+ Extension SDK
-#
-# Compiles CoffeeScript files into JavaScript
 
+MINIFY = closure
 JSBEAUTIFIER = jsbeautifier.py
 COFFEE = coffee
 COFFEEFLAGS = --bare
@@ -18,13 +17,16 @@ GPLUSX_HEADER = \n/*************************************************************
  ****************************************************************************/\n\n
 
 
-COFFEE_TARGETS := $(patsubst %.coffee,%.js,$(wildcard *.coffee))
 LIBRARY_TARGET = gplusx.js
+DIST_LIBRARY_TARGET = gplusx-min.js
+COFFEE_TARGETS := $(patsubst %.coffee,%.js,$(wildcard *.coffee))
 TARGETS = $(COFFEE_TARGETS) $(LIBRARY_TARGET)
 
 all: $(LIBRARY_TARGET)
 
-$(LIBRARY_TARGET): gplusx-rules.js gplusx-class.js
+dist: $(DIST_LIBRARY_TARGET)
+
+$(LIBRARY_TARGET): gplusx-class.js gplusx-rules.js
 	@if [ -e $@ ]; then chmod +w "$@"; fi
 	@echo "cat $^ > $@"
 	@(echo "$(GPLUSX_HEADER)"; cat $^ ) > "$@"
@@ -36,6 +38,9 @@ $(LIBRARY_TARGET): gplusx-rules.js gplusx-class.js
 %.js : %.coffee
 	@echo "$(COFFEE) $(COFFEEFLAGS) --print -c $< > $@"
 	@(echo "$(COFFEE_HEADER)"; $(COFFEE) $(COFFEEFLAGS) --print -c $<) > "$@" || ( rm -f "$@"; false )
+
+$(DIST_LIBRARY_TARGET) : $(LIBRARY_TARGET)
+	$(MINIFY) < $^ > $@
 
 clean:
 	rm -f $(TARGETS)
@@ -50,4 +55,4 @@ lint: $(COFFEE_TARGETS)
 	for i in $(filter-out $(LIBRARY_TARGET), $(wildcard *.js)); do jsl -process $$i; done
 
 beautrules:
-	perl -pe 's/\\n/\\\n        /g' gplusx-rules-cache.json | $(JSBEAUTIFIER) - > gplusx-rules-cache.js
+	perl -pe 's/\\n/\\\n        /g' gen/gplusx-rules-cache.json | $(JSBEAUTIFIER) - > gen/gplusx-rules-cache.js

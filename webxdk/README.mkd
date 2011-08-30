@@ -1,4 +1,0 @@
-WebXDK
-======
-
-This is an SDK for writing a client-side browser API

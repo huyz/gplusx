@@ -15,7 +15,7 @@
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
   switch (request.action) {
     case 'gplusxOpenTab':
-      chrome.tabs.create({url: request.url});
+      chrome.tabs.create({url: request.url}, sendResponse);
       break;
     default: break;
   }
