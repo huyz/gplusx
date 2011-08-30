@@ -27,7 +27,7 @@ $(document).ready(function() {
       if (confirm("Gplusx: save new rules to file?")) {
         gpx.writeRulesToFile(rulesFilename, function(url) {
           url = url.replace(/\/$/, '') + '/';
-          chrome.extension.sendRequest({action: 'gplusxOpenTab', url: url + rulesFilename})
+          chrome.extension.sendRequest({action: 'gplusxOpenTab', url: url + rulesFilename});
         });
       }
     }
