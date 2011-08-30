@@ -50,7 +50,8 @@ Essentially, you have 2 levels of inclusion:
         {
           "matches" : ["http://plus.google.com/*", "https://plus.google.com/*"],
           "js": [
-            "gplusx/webxdk/jquery.js",
+            "gplusx/webxdk/jquery-1.6.2.js",
+            "gplusx/webxdk/webx.js",
             "gplusx/gplusx.js",
             "YOUR_OWN_CONTENT_SCRIPT.js"],
           "run_at": "document_start"
@@ -60,6 +61,15 @@ Essentially, you have 2 levels of inclusion:
 
 2. If you also inject your JS files from within your background page, then
    don't forget to modify it as well.
+
+3. When you zip up your files for distribution, make sure to include
+
+    ```
+    gplusx/webxdk/jquery-1.6.2.js,
+    gplusx/webxdk/webx.js,
+    gplusx/gplusx.js,
+    gplusx/gen/gplusx-map.json,
+    ```
 
 ## To contribute to this library
 
