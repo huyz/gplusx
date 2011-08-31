@@ -1,15 +1,15 @@
 
 /****************************************************************************
  * GPlusX mapping rules.
- * This section was compiled from CoffeeScript on Tue Aug 30 18:08:22 EST 2011.
+ * This section was compiled from CoffeeScript on Wed Aug 31 19:20:38 EST 2011.
  ****************************************************************************/
 
 
 Gplusx.gplusxMapIdFunc = function() {
-  if (this.s.gbarParent != null) {
-    return this.s.gbarParent;
-  } else {
-    return null;
+  var c;
+  c = $(this.s.gbarParent).attr('class');
+  if (c) {
+    return c.replace(/\s*(?:gpr_gbar|SkipMeIAmAlradyFixPushed)/, '').replace(/^(\S+\s+\S+)\s.*/, '$1');
   }
 };
 Gplusx.gplusxMappingRulesForId = function() {

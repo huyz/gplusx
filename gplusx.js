@@ -1,7 +1,7 @@
 
 /****************************************************************************
  * GPlusX + WebXDK
- * File was combined by 'make' on Tue Aug 30 18:08:23 EST 2011.
+ * File was combined by 'make' on Wed Aug 31 19:20:39 EST 2011.
  ****************************************************************************/
 
 
@@ -17,7 +17,7 @@
 /**
  * Constructor for Gplusx.
  *
- * @param config {Object} configuration parameters, all optional:
+ * @param config {Object} configuration parameters for end-user extensions, all optional:
  * extendJQuerySelectors     {Boolean} Change jQuery selectors to accept '%post' selectors [default: false]
  * extendJQueryPseudoClasses {Boolean} Extend jQuery selectors to accept ':Xpost' [ default: false]
  * extendQuerySelectors      {Boolean} Extend (Document|Element).querySelector(All|) to accept '%post' selectors
@@ -25,7 +25,13 @@
  * aliasAPI                  {Boolean} or {String} If set, aliases API functions to shorthand, by default
  *                             'X', so that you have access to $X('%post') for jQuery or X('%post') for DOM.
  *                             If set to string, then overrides 'X' with your choice
- *                      
+ *
+ * strict                    {Boolean} If true, keys that are not (yet) mapped to selectors will generate
+ *                             syntax exceptions from jQuery and querySelector(All|). If false, then the error
+ *                             will be silent, and that part of the selectors will not match any elements,
+ *                             e.g. '.top > div%post, .comment' will then only return elements that
+ *                             match '.comment'
+ *
  * @param initCallback {Function} For convenience, this triggers the automatic calling of init()
  *   with the initCallback as argument.
  */
@@ -102,15 +108,15 @@ if (!this.Gplusx)
 
 /****************************************************************************
  * GPlusX mapping rules.
- * This section was compiled from CoffeeScript on Tue Aug 30 18:08:22 EST 2011.
+ * This section was compiled from CoffeeScript on Wed Aug 31 19:20:38 EST 2011.
  ****************************************************************************/
 
 
 Gplusx.gplusxMapIdFunc = function() {
-  if (this.s.gbarParent != null) {
-    return this.s.gbarParent;
-  } else {
-    return null;
+  var c;
+  c = $(this.s.gbarParent).attr('class');
+  if (c) {
+    return c.replace(/\s*(?:gpr_gbar|SkipMeIAmAlradyFixPushed)/, '').replace(/^(\S+\s+\S+)\s.*/, '$1');
   }
 };
 Gplusx.gplusxMappingRulesForId = function() {

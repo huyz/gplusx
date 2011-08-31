@@ -1,6 +1,9 @@
 /****************************************************************************
  * Gplusx standalone browser extension
  ***************************************************************************/
+
+// Turns on debugging for this extension and Webx
+var DEBUG = true;
     
 // Main
 $(document).ready(function() {
@@ -9,7 +12,10 @@ $(document).ready(function() {
 
   var gpx = new Gplusx({
     bundledMapFilepath: '/gen/' + mapFilename,
-    bundledRulesFilepath: '/gen/' + rulesFilename
+    bundledRulesFilepath: '/gen/' + rulesFilename,
+    strict: true,
+    warn: true,
+    debug: DEBUG
   }, function() {
 
     gpx.dumpToConsole('From bundled file');

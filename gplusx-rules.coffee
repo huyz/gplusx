@@ -6,15 +6,20 @@
 # ***************************************************************************
 
 # Returns a unique ID for this set of mapping;
-# null, if there aren't enough mappings to generate an ID
+# null, if there aren't enough mappings to generate an ID.
 Gplusx.gplusxMapIdFunc = ->
-#  if @s.gbarParent?
-#    # The settings page has no gplusbar, but I hesitate to only take
-#    # one element's className as an ID
-#    @s.gbarParent + if @s.gplusBar? then ',' + @s.gplusBar else ''
-#  else
-#    null
-  if @s.gbarParent? then @s.gbarParent else null
+  # Grab the class name from gbarParent.
+  # Notes:
+  # - We don't take the selector directly because the selector is extracted with an ssFilter
+  #   which may stop working if Google+ changes its stylesheets.
+  # - We want the class names in a consistent order; we choose whatever Google+ has.
+  # - Sometimes that element has 2 classNames, sometimes 3.  The 3rd one is for
+  #   for fixing the gbar.  Maybe some users still don't have it rolled out.
+  #   We don't need it anyway.
+  # - Some extensions add crap to the end of that className.
+  # - The settings page has no gplusbar, so can't use that.
+  c = $(@s.gbarParent).attr('class')
+  c.replace(/\s*(?:gpr_gbar|SkipMeIAmAlradyFixPushed)/, '').replace(/^(\S+\s+\S+)\s.*/, '$1') if c
 
 # Executes just the rules sufficient for generating an ID
 Gplusx.gplusxMappingRulesForId = ->
