@@ -14,7 +14,12 @@ COFFEE_HEADER = \n/*************************************************************
 GPLUSX_HEADER = \n/****************************************************************************\n\
  * GPlusX + WebXDK\n\
  * File was combined by 'make' on `date`.\n\
- ****************************************************************************/\n\n
+ ****************************************************************************/\n\n\
+;(function(window, $$, undefined) { // Semicolon coz https://github.com/mootools/slick/wiki/IIFE\n\n\
+// Like jQuery\n\
+var document = window.document;\n
+
+GPLUSX_FOOTER = \n}).call(/*<CommonJS>*/(typeof exports != 'undefined') ? exports : /*</CommonJS>*/this, window, jQuery);\n
 
 
 LIBRARY_TARGET = gplusx.js
@@ -29,7 +34,7 @@ dist: $(DIST_LIBRARY_TARGET)
 $(LIBRARY_TARGET): gplusx-class.js gplusx-rules.js
 	@if [ -e $@ ]; then chmod +w "$@"; fi
 	@echo "cat $^ > $@"
-	@(echo "$(GPLUSX_HEADER)"; cat $^ ) > "$@"
+	@(echo "$(GPLUSX_HEADER)"; cat $^; echo "$(GPLUSX_FOOTER)" ) > "$@"
 	@chmod -w "$@"
 
 #%.coffee : %.coffeex

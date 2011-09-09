@@ -5,8 +5,6 @@
  * TODO: port so that jQuery is no longer required.
  ****************************************************************************/
 
-;(function($){ // Semicolon coz https://github.com/mootools/slick/wiki/IIFE
-
 /**
  * Constructor for Gplusx.
  *
@@ -95,6 +93,3 @@ Gplusx.prototype.getPostsX$ = function() {
 // Gplusx namespace
 if (!this.Gplusx)
   this.Gplusx = Gplusx;
-
-}).call(/*<CommonJS>*/(typeof exports != 'undefined') ? exports : /*</CommonJS>*/this, jQuery);
-

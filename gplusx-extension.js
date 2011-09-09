@@ -43,11 +43,11 @@ $(document).ready(function() {
       gpx.writeMapToFile(mapFilename, function(url) {
         url = url.replace(/\/$/, '') + '/';
         chrome.extension.sendRequest({action: 'gplusxOpenTab', url: url + mapFilename}, function() {
-          writeRulesToFile();
+          //writeRulesToFile();
         });
       });
     } else {
-      writeRulesToFile();
+      //writeRulesToFile();
     }
   });
 });
