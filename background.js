@@ -14,9 +14,6 @@
 // Listen to incoming messages from content scripts
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
   switch (request.action) {
-    case 'gplusxOpenTab':
-      chrome.tabs.create({url: request.url}, sendResponse);
-      break;
     default: break;
   }
 });

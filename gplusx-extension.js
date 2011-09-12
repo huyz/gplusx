@@ -33,7 +33,7 @@ $(document).ready(function() {
       if (confirm("Gplusx: save new rules to file?")) {
         gpx.writeRulesToFile(rulesFilename, function(url) {
           url = url.replace(/\/$/, '') + '/';
-          chrome.extension.sendRequest({action: 'gplusxOpenTab', url: url + rulesFilename});
+          chrome.extension.sendRequest({action: 'webxOpenTab', url: url + rulesFilename});
         });
       }
     }
@@ -42,7 +42,7 @@ $(document).ready(function() {
     if (confirm("Gplusx: save new mappings to file?")) {
       gpx.writeMapToFile(mapFilename, function(url) {
         url = url.replace(/\/$/, '') + '/';
-        chrome.extension.sendRequest({action: 'gplusxOpenTab', url: url + mapFilename}, function() {
+        chrome.extension.sendRequest({action: 'webxOpenTab', url: url + mapFilename}, function() {
           //writeRulesToFile();
         });
       });

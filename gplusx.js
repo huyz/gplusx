@@ -1,7 +1,7 @@
 
 /****************************************************************************
  * GPlusX + WebXDK
- * File was combined by 'make' on Fri Sep  9 04:05:39 EST 2011.
+ * File was combined by 'make' on Mon Sep 12 20:22:51 EST 2011.
  ****************************************************************************/
 
  ;(function(window, $, undefined) { // Semicolon coz https://github.com/mootools/slick/wiki/IIFE
@@ -107,7 +107,7 @@ if (!this.Gplusx)
 
 /****************************************************************************
  * GPlusX mapping rules.
- * This section was compiled from CoffeeScript on Fri Sep  9 04:05:39 EST 2011.
+ * This section was compiled from CoffeeScript on Mon Sep 12 20:22:51 EST 2011.
  ****************************************************************************/
 
 
@@ -129,29 +129,121 @@ Gplusx.gplusxMappingRulesForId = function() {
   });
 };
 Gplusx.gplusxMappingRules = function() {
-  var POST_IS_NEW_COLOR, POST_IS_SELECTED_COLOR;
-  POST_IS_SELECTED_COLOR = 'rgb(77, 144, 240)';
-  POST_IS_NEW_COLOR = 'rgb(167, 199, 247)';
+  var SS_gbarParentIsFixed, SS_gbarToolsNotificationUnitBgZero, SS_gbarToolsNotificationUnitFgZero, SS_gplusBarIsFixed, SS_postCommentContentExpandableIsCollapsed, SS_postCommentsButtonChevronWouldCollapse, SS_postCommentsTogglerIsGrayed, SS_postIsNew, SS_postIsSelected, fn_makeChildShareIconHoverable2_, fn_postContentQuotedPost, fn_postHeadInfoMuted, simpleSelectorForShareIcon;
+  SS_gbarParentIsFixed = {
+    position: 'fixed',
+    top: '0',
+    width: '100%'
+  };
+  SS_gplusBarIsFixed = {
+    position: 'fixed',
+    top: '',
+    zIndex: ''
+  };
+  SS_postIsSelected = {
+    borderLeftColor: 'rgb(77, 144, 240)'
+  };
+  SS_postIsNew = {
+    borderLeftColor: 'rgb(167, 199, 247)'
+  };
+  SS_postCommentContentExpandableIsCollapsed = {
+    overflow: 'hidden'
+  };
+  SS_gbarToolsNotificationUnitBgZero = {
+    backgroundPosition: '-26px'
+  };
+  SS_gbarToolsNotificationUnitFgZero = {
+    color: 'rgb(153, 153, 153)'
+  };
+  SS_postCommentsTogglerIsGrayed = {
+    color: 'rgb(153, 153, 153)',
+    '!*': ''
+  };
+  SS_postCommentsButtonChevronWouldCollapse = {
+    backgroundImage: 'stream/collapse'
+  };
+  simpleSelectorForShareIcon = function(sel, key) {
+    var results, simple, singleSimple, _i, _len, _ref;
+    results = {};
+    singleSimple = null;
+    _ref = sel.split(/\s*,\s*/).map(function(s) {
+      var parts;
+      parts = s.split(/\s+/);
+      if (parts.length === 1) {
+        singleSimple = parts[0];
+      }
+      return parts[parts.length - 1];
+    });
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      simple = _ref[_i];
+      results[simple] = true;
+    }
+    if (singleSimple) {
+      return singleSimple;
+    } else if (Object.keys(results).length === 1) {
+      return Object.keys(results)[0];
+    } else {
+      this.error(key, 'Incorrect number of matches in selector "' + sel + '"');
+      return null;
+    }
+  };
+  this.ss({
+    shareIconsPhoto2: {
+      backgroundImage: 'sharebox/sprite2',
+      backgroundPositionY: '-88px'
+    }
+  }, simpleSelectorForShareIcon);
+  this.ss({
+    shareIconsVideo2: {
+      backgroundImage: 'sharebox/sprite2',
+      backgroundPositionY: '-143px'
+    }
+  }, simpleSelectorForShareIcon);
+  this.ss({
+    shareIconsLink2: {
+      backgroundImage: 'sharebox/sprite2',
+      backgroundPositionY: '-239px'
+    }
+  }, simpleSelectorForShareIcon);
+  this.ss({
+    shareIconsLocation2: {
+      backgroundImage: 'sharebox/sprite2',
+      backgroundPositionY: '-107px'
+    }
+  }, simpleSelectorForShareIcon);
+  fn_makeChildShareIconHoverable2_ = function() {
+    return this.ss({
+      makeChildShareIconHoverable2_: {
+        backgroundImage: 'sharebox/sprite2',
+        backgroundPositionY: '-52px'
+      }
+    }, function(sel) {
+      return sel.replace(/^(?:.*,)?\s*(\.[^\s,]+)\s+[^\s,]+:hover\s*(?:,.*)?$/, '$1');
+    });
+  };
+  this.ss({
+    makeChildShareIconNonHoverable2: {
+      backgroundImage: 'sharebox/sprite2',
+      backgroundPositionY: '-239px'
+    }
+  }, function(sel, key) {
+    var makeChildShareIconHoverable2_;
+    this.call(fn_makeChildShareIconHoverable2_);
+    makeChildShareIconHoverable2_ = this.mappedSelector.makeChildShareIconHoverable2_;
+    return '' + sel.split(/\s*,\s*/).map(function(s) {
+      return s.split(/\s+/)[0];
+    }).filter(function(s) {
+      return s !== makeChildShareIconHoverable2_;
+    });
+  });
   this.e('gbar', '#gb', function() {
     return this.e('gbarParent', {
-      ssFilter: {
-        gbarParentIsFixed: {
-          position: 'fixed',
-          top: '0',
-          width: '100%'
-        }
-      }
+      ssFilter: SS_gbarParentIsFixed
     }, (function() {
       return this.parent();
     }), function() {
       return this.e('gplusBar', {
-        ssFilter: {
-          gplusBarIsFixed: {
-            position: 'fixed',
-            top: '',
-            zIndex: ''
-          }
-        }
+        ssFilter: SS_gplusBarIsFixed
       }, (function() {
         return this.nextAll(':not(:empty)').first();
       }), function() {
@@ -164,31 +256,41 @@ Gplusx.gplusxMappingRules = function() {
             return this.e('gplusBarNavStreamA', (function() {
               return this.children('a:first-child');
             }), function() {
-              this.e('gplusBarNavStreamIcon_c', (function() {
+              this.e('gplusBarNavStreamIcon', {
+                allClassNames: true
+              }, (function() {
                 return this.children();
               }));
               return this.e('gplusBarNavPhotosA', (function() {
                 return this.next();
               }), function() {
-                this.e('gplusBarNavPhotosIcon_c', (function() {
+                this.e('gplusBarNavPhotosIcon', {
+                  allClassNames: true
+                }, (function() {
                   return this.children();
                 }));
                 return this.e('gplusBarNavProfileA', (function() {
                   return this.next();
                 }), function() {
-                  this.e('gplusBarNavProfileIcon_c', (function() {
+                  this.e('gplusBarNavProfileIcon', {
+                    allClassNames: true
+                  }, (function() {
                     return this.children();
                   }));
                   return this.e('gplusBarNavCirclesA', (function() {
                     return this.next();
                   }), function() {
-                    this.e('gplusBarNavCirclesIcon_c', (function() {
+                    this.e('gplusBarNavCirclesIcon', {
+                      allClassNames: true
+                    }, (function() {
                       return this.children();
                     }));
                     return this.e('gplusBarNavGamesA', (function() {
                       return this.next();
                     }), function() {
-                      return this.e('gplusBarNavGamesIcon_c', (function() {
+                      return this.e('gplusBarNavGamesIcon', {
+                        allClassNames: true
+                      }, (function() {
                         return this.children();
                       }));
                     });
@@ -203,14 +305,14 @@ Gplusx.gplusxMappingRules = function() {
   });
   this.e('gbarTop', '#gbw');
   this.e('gbarLinks', '#gbz', function() {
-    return this.e('gbarList_c', (function() {
+    return this.e('gbarLinksList_c', (function() {
       return this.children('ol');
     }), function() {
-      this.combo('gbarLinksList', '%gbarLinks > %gbarList_c');
-      return this.e('gbarListItem_c', (function() {
+      this.combo('gbarLinksList', '%gbarLinks > %gbarLinksList_c');
+      return this.e('gbarLinksListItem_c', (function() {
         return this.children('li').first();
       }), function() {
-        return this.combo('gbarLinksListItem', '%gbarLinksList > %gbarListItem_c');
+        return this.combo('gbarLinksListItem', '%gbarLinksList > %gbarLinksListItem_c');
       });
     });
   });
@@ -218,14 +320,18 @@ Gplusx.gplusxMappingRules = function() {
   this.e('gbarLinksMoreUnitText', '#gbztms1');
   this.e('gbarMorePullDown', '#gbd');
   this.e('gbarTools', '#gbg', function() {
-    return this.e('gbarList_c', (function() {
+    return this.e('gbarToolsList_c', {
+      warnDuplicate: false
+    }, (function() {
       return this.children('ol');
     }), function() {
-      this.combo('gbarToolsList', '%gbarTools > gbarList_c');
-      return this.e('gbarListItem_c', (function() {
+      this.combo('gbarToolsList', '%gbarTools > %gbarToolsList_c');
+      return this.e('gbarToolsListItem_c', {
+        warnDuplicate: false
+      }, (function() {
         return this.children('li').first();
       }), function() {
-        return this.combo('gbarToolsListItem', '%gbarToolsList > %gbarListItem_c');
+        return this.combo('gbarToolsListItem', '%gbarToolsList > %gbarLinksListItem_c');
       });
     });
   });
@@ -233,20 +339,16 @@ Gplusx.gplusxMappingRules = function() {
   this.e('gbarToolsProfileNameText', '#gbi4t');
   this.e('gbarToolsNotificationA', '#gbg1');
   this.e('gbarToolsNotificationUnit', '#gbgs1');
-  this.e('gbarToolsNotificationUnitBg', '#gbi1a', function() {
-    return this.ss({
-      gbarToolsNotificationUnitBgZero: {
-        backgroundPosition: '-26px'
-      }
-    });
-  });
-  this.e('gbarToolsNotificationUnitFg', '#gbi1', function() {
-    return this.ss({
-      gbarToolsNotificationUnitFgZero: {
-        color: 'rgb(153, 153, 153)'
-      }
-    });
-  });
+  this.e('gbarToolsNotificationUnitBg', {
+    ssFilter: {
+      gbarToolsNotificationUnitBgZero: SS_gbarToolsNotificationUnitBgZero
+    }
+  }, '#gbi1a');
+  this.e('gbarToolsNotificationUnitFg', {
+    ssFilter: {
+      gbarToolsNotificationUnitFgZero: SS_gbarToolsNotificationUnitFgZero
+    }
+  }, '#gbi1');
   this.e('gbarToolsShareA', '#gbg3');
   this.e('gbarToolsShareUnit', '#gbgs3');
   this.e('gbarToolsShareUnitText', '#gbi3');
@@ -260,7 +362,7 @@ Gplusx.gplusxMappingRules = function() {
         return this.children('ol');
       }), function() {
         return this.e('gbarToolsProfileCardContentListItem_c', {
-          many: true
+          warnMany: false
         }, (function() {
           return this.children('li');
         }));
@@ -280,18 +382,10 @@ Gplusx.gplusxMappingRules = function() {
   this.e('searchBox', '#search-box');
   this.e('searchBoxInput', '#ozIdSearchBox');
   this.ss({
-    gbarParentIsFixed: {
-      position: 'fixed',
-      top: '0',
-      width: '100%'
-    }
+    gbarParentIsFixed: SS_gbarParentIsFixed
   });
   this.ss({
-    gplusBarIsFixed: {
-      position: 'fixed',
-      top: '',
-      zIndex: ''
-    }
+    gplusBarIsFixed: SS_gplusBarIsFixed
   });
   this.e('content', '#content', function() {
     return this.e('copyrightRow', (function() {
@@ -307,15 +401,22 @@ Gplusx.gplusxMappingRules = function() {
     }));
   });
   this.e('feedbackLink', 'body > [href*="learnmore"]');
-  this.e('notification', (function() {
+  this.e('notification', {
+    warnMany: false
+  }, (function() {
     return $('#contentPane > div > div > div > [data-nid]');
   }), void 0, function() {
     return this.e('notificationsStream', (function() {
       return this.first().parent();
-    }));
+    }), function() {
+      return this.combo('notificationsPageMarker', {
+        warnDuplicate: false
+      }, '%notificationsStream');
+    });
   });
   this.e('sparksFeaturedInterestsA', {
-    many: true
+    warnMany: false,
+    allClassNames: true
   }, (function() {
     return $('a[href^="sparks/interest"]');
   }), void 0, function() {
@@ -344,35 +445,164 @@ Gplusx.gplusxMappingRules = function() {
         }), function() {
           return this.e('sparksFeaturedInterests', (function() {
             return this.parent();
-          }));
+          }), function() {
+            return this.combo('sparksPageMarker', {
+              warnDuplicate: false
+            }, '%sparksFeaturedInterests');
+          });
         });
       });
     });
   });
-  this.e('sparkBody', {
-    main: true
-  }, (function() {
+  this.e('sparkBody', (function() {
     return $('input[type="text"] + [role="button"]').parent().next().find('> div > div > [id^="update-"]:first').parent().parent().parent();
   }), function() {
-    return this.e('streamParent', (function() {
+    this.combo('sparkPageMarker', {
+      warnDuplicate: false
+    }, '%sparkBody');
+    return this.e('sparkStreamParent_c', {
+      warnDuplicate: false
+    }, (function() {
       return this.find('> div > div > [id^="update-"]:first').parent().parent();
     }), function() {
-      this.combo('sparkStreamParent', '%sparkBody > %streamParent');
-      return this.e('stream', (function() {
+      this.combo('sparkStreamParent', '%sparkBody > %sparkStreamParent_c');
+      return this.e('sparkStream_c', {
+        warnDuplicate: false
+      }, (function() {
         return this.children('div:first');
       }), function() {
-        return this.combo('sparkStream', '%sparkStreamParent > %stream');
+        return this.combo('sparkStream', '%sparkStreamParent > %sparkStream_c');
       });
     });
   });
-  this.e('stream', function() {
-    return $('#contentPane > *').not($('a[href="games"]').closest('#contentPane > *')).not($('input[type="text"] + [role="button"]').closest('#contentPane > *')).find('[id^="update-"]:first').parent();
-  }, function() {
-    this.combo('circleStream', '%stream:not(%sparkStream)');
-    this.e('streamParent', (function() {
+  this.e('singlePostParent', (function() {
+    return $('#contentPane > div > div > [id^="update-"]').parent();
+  }), function() {
+    return this.combo('singlePostPageMarker', {
+      warnDuplicate: false
+    }, '%singlePostParent');
+  });
+  this.e('gamesLinksWidgetHomeLink', {
+    warnMany: false
+  }, 'a[href="games"]', function() {
+    this.combo('gamesPageMarker', {
+      warnDuplicate: false
+    }, '%gamesLinksWidgetHomeLink');
+    return this.e('gamesLinksWidget', (function() {
       return this.parent();
     }), function() {
-      this.combo('circleStreamParent', '%streamParent:not(%sparkStreamParent)');
+      this.e('gamesSelfWidget', (function() {
+        return this.prev();
+      }), function() {
+        return this.e('gamesSelfWidgetCon"tent', (function() {
+          return this.children();
+        }), function() {
+          this.e('gamesSelfWidgetAvatarA', {
+            allClassNames: true
+          }, (function() {
+            return this.children('a:eq(0)');
+          }), function() {
+            return this.e('gamesSelfWidgetAvatarImg', (function() {
+              return this.children('img');
+            }), function() {});
+          });
+          return this.e('gamesSelfWidgetNameLink', (function() {
+            return this.children('a:eq(1)');
+          }));
+        });
+      });
+      this.e('gamesRecentWidget', (function() {
+        return this.children().last();
+      }), function() {
+        this.e('gamesRecentWidgetHeading', (function() {
+          return this.children(':eq(0)');
+        }));
+        return this.e('gamesRecentWidgetBody', (function() {
+          return this.children(':eq(1)');
+        }), function() {
+          return this.e('gamesRecentWidgetList', (function() {
+            return this.children(':eq(0)');
+          }), function() {
+            return this.e('gamesRecentWidgetListItem', {
+              warnMany: false
+            }, (function() {
+              return this.children();
+            }));
+          });
+        });
+      });
+      return this.e('gamesLeftPane', (function() {
+        return this.parent();
+      }), function() {
+        return this.e('gamesMainPane', (function() {
+          return this.next();
+        }), function() {
+          this.e('gamesMainPaneHeading', (function() {
+            return this.children(':eq(0)');
+          }));
+          return this.e('gamesActivitiesStream', (function() {
+            return this.children(':last').filter(':nth-child(3)').children(':eq(2)').children('[id^="update-"]').parent();
+          }), function() {
+            this.e('gamesActivitiesStreamNoActivityText', (function() {
+              return this.prev();
+            }), function() {
+              return this.e('gamesActivitiesStreamHeading', (function() {
+                return this.prev();
+              }), function() {
+                return this.e('gamesActivitiesStreamHeadingText', (function() {
+                  return this.children().first();
+                }));
+              });
+            });
+            return this.e('gamesActivitiesStreamParent', (function() {
+              return this.parent();
+            }), function() {
+              return this.combo('gamesActivitiesStreamBanner', '%gamesMainPane > :nth-child(2):not(:last-child)');
+            });
+          });
+        });
+      });
+    });
+  });
+  this.e('gamesLinksWidgetDirectoryLink', {
+    warnMany: false
+  }, 'a[href="games/directory"]');
+  this.e('gamesLinksWidgetNotificationsLink', {
+    warnMany: false
+  }, 'a[href="games/notifications"]');
+  this.e('profileContentPane', '.vcard', function() {
+    this.combo('profilePageMarker', {
+      warnDuplicate: false
+    }, '%profileContentPane');
+    return this.e('profileScaffold', (function() {
+      return this.children();
+    }), function() {
+      this.e('profileCirclesUnit', (function() {
+        return this.children(':eq(0)').children(':eq(0)');
+      }), function() {});
+      return this.e('profileHeading', (function() {
+        return this.children(':eq(0)').children(':eq(1)');
+      }), function() {
+        return this.e('profileHeadingName', (function() {
+          return this.children('span:eq(0)');
+        }));
+      });
+    });
+  });
+  this.e('circleStream_c', {
+    warnMany: false
+  }, (function() {
+    return $('#contentPane > *').not($('a[href^="games"]').closest('#contentPane > *')).not($('input[type="text"] + [role="button"]').closest('#contentPane > *')).not($('#contentPane > div > div > [id^="update-"]').closest('#contentPane > *')).find('[id^="update-"]:first').parent();
+  }), function() {
+    this.combo('circleStream', {
+      jQuerySelector: true
+    }, '%circleStream_c:not(%sparkStream)');
+    this.e('circleStreamParent_c', (function() {
+      return this.parent();
+    }), function() {
+      this.combo('circleStreamParent', {
+        jQuerySelector: true
+      }, '%circleStreamParent_c:not(%sparkStreamParent)');
       this.e('circleStreamContentPaneHeading', (function() {
         return this.parent().children(':eq(0)');
       }), function() {
@@ -397,16 +627,15 @@ Gplusx.gplusxMappingRules = function() {
                 hoverableClassName = rule.selectorText.replace(/^(?:.*,)?\s*\.([^\s,]+)\s+[^\s,]+:hover\s*(?:,.*)?$/, '$1');
               }
             }
-            debug('shareIconNonHoverable', 'hoverableClassName=' + hoverableClassName);
             return this.ss({
               makeChildShareIconNonHoverable: {
                 background: 'url',
                 cursor: 'default'
               }
-            }, function(_) {
+            }, function(sel) {
               var isStyled;
               isStyled = this.isStyled;
-              return hoverableClassName && '' + _.split(/,\s*/).map(function(s) {
+              return hoverableClassName && '' + sel.split(/\s*,\s*/).map(function(s) {
                 return s.split(/\s+/)[0];
               }).filter(function(s) {
                 var className;
@@ -455,199 +684,6 @@ Gplusx.gplusxMappingRules = function() {
       });
     });
   });
-  this.e('post', {
-    many: true,
-    alt: '[id^="update-"]',
-    ssFilter: {
-      postIsSelected_c: {
-        borderLeftColor: POST_IS_SELECTED_COLOR
-      },
-      postIsNew_c: {
-        borderLeftColor: POST_IS_NEW_COLOR
-      }
-    }
-  }, (function() {
-    return this.xpath('//*[starts-with(@id, "update-")]');
-  }), function() {
-    this.e('postPlaceholder_c', {
-      deferred: true
-    }, (function() {
-      return this.children(':empty');
-    }));
-    this.e('postMenu_c', {
-      pri: '[role="menu"]'
-    }, (function() {
-      return this.children('[role="menu"]');
-    }));
-    return this.e('postUserHeading_c', (function() {
-      return this.find('h3:first');
-    }), function() {
-      this.e('postUserHeadingName_c', (function() {
-        return this.children();
-      }));
-      return this.e('postHead_c', (function() {
-        return this.parent();
-      }), function() {
-        this.e('postMenuButton_c', (function() {
-          return this.children('[role="button"]');
-        }));
-        this.e('postUserAvatarA_cc', (function() {
-          return this.children('a[href^="/"][oid]');
-        }), function() {
-          this.combo('postUserAvatarA_c', '%postHead_c > %postUserAvatarA_cc');
-          return this.e('postUserAvatarImg_cc', (function() {
-            return this.children('img');
-          }), function() {
-            return this.combo('postUserAvatarImg_c', '%postUserAvatarA_c > %postUserAvatarImg_cc');
-          });
-        });
-        this.e('postUserNameA_c', (function() {
-          return this.find('div:eq(0) a[href^="/"][oid]');
-        }), function() {
-          return this.e('postUserName_c', (function() {
-            return this.parent();
-          }), function() {
-            return this.e('postHeadInfo_c', (function() {
-              return this.next();
-            }), function() {
-              this.e('postTime_c', (function() {
-                return this.children('span:first');
-              }), function() {
-                this.e('postTimeA_c', (function() {
-                  return this.children('a');
-                }));
-                return this.e('postCategory_c', {
-                  alt: this.s.postTime_c + ' + :not([role="button"])',
-                  deferred: true
-                }, (function() {
-                  return this.next(':not([role="button"])');
-                }));
-              });
-              return this.e('postPermissions_c', (function() {
-                return this.children('[role="button"]');
-              }));
-            });
-          });
-        });
-        this.e('postContainer_c', (function() {
-          return this.parent();
-        }));
-        return this.e('postBody_c', (function() {
-          return this.next();
-        }), function() {
-          this.e('postContent_c', (function() {
-            return this.children(':first');
-          }), function() {
-            return this.e('postContentExpandButton_c', {
-              deferred: true
-            }, (function() {
-              return this.find('[role="button"]:contains(»)');
-            }));
-          });
-          this.e('postPlusOneButton_c', {
-            alt: 'button[id][g\\:entity]'
-          }, (function() {
-            return this.find('button[id][g\\:entity]');
-          }), function() {
-            this.e('postActionBar_c', (function() {
-              return this.parent();
-            }), function() {
-              return this.e('postStats_c', (function() {
-                return this.next();
-              }));
-            });
-            return this.e('postCommentLink_c', (function() {
-              return this.next();
-            }), function() {
-              return this.e('postShareLink_c', (function() {
-                return this.next();
-              }));
-            });
-          });
-          return this.e('postComments_c', (function() {
-            return this.next();
-          }), function() {
-            this.e('postCommentsToggler_c', (function() {
-              return this.children(':eq(0)');
-            }), function() {
-              return this.e('postCommentsButtonChevron_c', (function() {
-                return this.children('[role="button"]:eq(0)');
-              }), function() {
-                return this.e('postCommentsButtonText_c', (function() {
-                  return this.next();
-                }), function() {
-                  this.e('postCommentsButtonTextLink_c', (function() {
-                    return this.children('[role="button"]');
-                  }), function() {
-                    this.e('postCommentsButtonTextLinkCount_c', (function() {
-                      return this.children(':eq(0)');
-                    }));
-                    return this.e('postCommentsButtonTextLinkWord_c', (function() {
-                      return this.children(':eq(1)');
-                    }));
-                  });
-                  return this.e('postCommentsButtonTextFromNames_c', {
-                    deferred: true
-                  }, (function() {
-                    return this.children(':eq(1)');
-                  }), function() {
-                    return this.e('postCommentsButtonTextFromNamesText_c', (function() {
-                      return this.children();
-                    }));
-                  });
-                });
-              });
-            });
-            this.e('postCommentsList_c', (function() {
-              return this.children(':eq(1)');
-            }), function() {
-              this.e('postCommentsOlderButton_c', (function() {
-                return this.children('[role="button"]:eq(0)');
-              }));
-              return this.e('postCommentsStream_c', (function() {
-                return this.children(':eq(1)');
-              }));
-            });
-            this.e('postCommentsFooter_c', (function() {
-              return this.next();
-            }), function() {
-              this.e('postCommentFooterChevron_c', (function() {
-                return this.children('span[role="button"]');
-              }));
-              return this.e('postCommentButton_c', (function() {
-                return this.children('div[role="button"]');
-              }));
-            });
-            return this.e('postCommentAddRow_c', (function() {
-              return this.next();
-            }), function() {
-              return this.e('postCommentAddButton_c', (function() {
-                return this.children('div[role="button"]');
-              }));
-            });
-          });
-        });
-      });
-    });
-  }, function() {
-    this.ss({
-      postIsSelected_c: {
-        borderLeftColor: POST_IS_SELECTED_COLOR
-      }
-    });
-    return this.ss({
-      postIsNew_c: {
-        borderLeftColor: POST_IS_NEW_COLOR
-      }
-    });
-  });
-  this.ss({
-    postHeadInfoMuted_c: {
-      color: 'rgb(196, 43, 44)',
-      '!fontSize': '',
-      '!fontStyle': ''
-    }
-  });
   this.ss({
     hangoutLiveIcon: {
       background: 'icon_live_active'
@@ -662,13 +698,346 @@ Gplusx.gplusxMappingRules = function() {
   this.ss({
     deferred: true
   }, {
-    postIsMutedOrDeleted_dc: {
+    postIsMutedOrDeleted_d: {
       paddingTop: '0px',
       paddingRight: '0px',
       paddingBottom: '0px',
       paddingLeft: '0px',
       '!*': ''
     }
+  });
+  this.ss({
+    postCommentsButtonChevronWouldCollapse: SS_postCommentsButtonChevronWouldCollapse
+  });
+  fn_postHeadInfoMuted = function() {
+    return this.ss({
+      postHeadInfoMuted: {
+        color: 'rgb(196, 43, 44)',
+        '!fontSize': '',
+        '!fontStyle': ''
+      }
+    });
+  };
+  this.call(fn_postHeadInfoMuted);
+  fn_postContentQuotedPost = function() {
+    return this.ss({
+      postContentQuotedPost: {
+        borderLeft: '1px solid rgb(234, 234, 234)'
+      }
+    });
+  };
+  this.call(fn_postContentQuotedPost);
+  this.e('post', {
+    warnMany: false,
+    alt: '[id^="update-"]',
+    ssFilter: {
+      postIsSelected: SS_postIsSelected,
+      postIsNew: SS_postIsNew
+    }
+  }, (function() {
+    return this.xpath('//*[starts-with(@id, "update-")]');
+  }), function() {
+    this.e('postPlaceholder', {
+      warnNoElement: false
+    }, (function() {
+      return this.children(':empty');
+    }));
+    this.e('postMenu', {
+      pri: '[role="menu"]',
+      warnNoElement: false
+    }, (function() {
+      return this.find('[role="menu"]');
+    }), function() {
+      this.e('postMenuItemUnmute', {
+        warnNoElement: false
+      }, function() {
+        var $menuItems, $post;
+        this.call(fn_postHeadInfoMuted);
+        $post = this.closest('[id^="update-"]');
+        if ($post.find(this.mappedSelector.postHeadInfoMuted).length > 0 && (($menuItems = $post.find('[role="menu"]').children()).length === 2 || $menuItems.length === 3)) {
+          return $menuItems[$menuItems.length - 1];
+        } else {
+          return null;
+        }
+      });
+      return this.e('postMenuItemMute', function() {
+        var $greatest, $menuItems, $post, classCount, greatest, greatestClassCount, menuItem, secondGreatestClassCount, _i, _len, _ref;
+        this.call(fn_postHeadInfoMuted);
+        $post = this.closest('[id^="update-"]');
+        if ($post.find(this.mappedSelector.postHeadInfoMuted).length === 0) {
+          $menuItems = $post.find('[role="menu"]').children();
+          greatestClassCount = secondGreatestClassCount = -1;
+          $greatest = null;
+          for (_i = 0, _len = $menuItems.length; _i < _len; _i++) {
+            menuItem = $menuItems[_i];
+            classCount = menuItem.className.trim().split(/\s+/).length;
+            if (classCount > greatestClassCount) {
+              _ref = [greatestClassCount, classCount], secondGreatestClassCount = _ref[0], greatestClassCount = _ref[1];
+              greatest = menuItem;
+            } else if (classCount === greatestClassCount) {
+              greatest = null;
+            } else if (classCount < greatestClassCount && classCount > secondGreatestClassCount) {
+              secondGreatestClassCount = classCount;
+            }
+          }
+          if (secondGreatestClassCount > 0) {
+            return greatest;
+          } else {
+            return null;
+          }
+        } else {
+          return null;
+        }
+      });
+    });
+    return this.e('postUserHeading', (function() {
+      return this.find('h3:first');
+    }), function() {
+      this.e('postUserHeadingName', (function() {
+        return this.children();
+      }));
+      return this.e('postHead', (function() {
+        return this.parent();
+      }), function() {
+        this.e('postMenuButton', (function() {
+          return this.children('[role="button"]');
+        }));
+        this.e('postUserAvatarA_c', (function() {
+          return this.children('a[href^="/"][oid]');
+        }), function() {
+          this.combo('postUserAvatarA', '%postHead > %postUserAvatarA_c');
+          return this.e('postUserAvatarImg_c', (function() {
+            return this.children('img');
+          }), function() {
+            return this.combo('postUserAvatarImg', '%postUserAvatarA > %postUserAvatarImg_c');
+          });
+        });
+        this.e('postUserNameA_c', (function() {
+          return this.find('div:eq(0) a[href^="/"][oid]');
+        }), function() {
+          return this.e('postUserName', (function() {
+            return this.parent();
+          }), function() {
+            this.combo('postUserNameA', '%postUserName > postUserNameA_c');
+            return this.e('postHeadInfo', (function() {
+              return this.next();
+            }), function() {
+              this.e('postTime', (function() {
+                return this.children('span:first');
+              }), function() {
+                this.e('postTimeA', {
+                  allClassNames: true
+                }, (function() {
+                  return this.children('a');
+                }));
+                return this.e('postCategory', {
+                  alt: this.mappedSelector.postTime + ' + :not([role="button"])',
+                  warnNoElement: false
+                }, (function() {
+                  return this.next(':not([role="button"])');
+                }));
+              });
+              return this.e('postPermissions', (function() {
+                return this.children('[role="button"]');
+              }));
+            });
+          });
+        });
+        this.e('postContainer', (function() {
+          return this.parent();
+        }));
+        return this.e('postBody', (function() {
+          return this.next();
+        }), function() {
+          this.e('postContent', (function() {
+            return this.children(':first');
+          }), function() {
+            this.e('postContentExpandButton', {
+              warnNoElement: false
+            }, (function() {
+              return this.find('[role="button"]:contains(»)');
+            }));
+            this.e('postContentShareMessage', (function() {
+              return this.children(':first');
+            }), function() {
+              return this.e('postContentShareMessageEdit', (function() {
+                return this.filter(':visible').find('span:not(:visible)');
+              }));
+            });
+            return this.e('postContentQuotedMessage', function() {
+              this.call(fn_postContentQuotedPost);
+              return this.find(this.mappedSelector.postContentQuotedPost);
+            }, function() {});
+          });
+          this.e('postPlusOneButton', {
+            alt: 'button[id][g\\:entity]'
+          }, (function() {
+            return this.find('button[id][g\\:entity]');
+          }), function() {
+            this.e('postActionBar', (function() {
+              return this.parent();
+            }), function() {
+              return this.e('postStats', (function() {
+                return this.next();
+              }));
+            });
+            return this.e('postCommentLink', (function() {
+              return this.next();
+            }), function() {
+              return this.e('postShareLink', (function() {
+                return this.next();
+              }));
+            });
+          });
+          return this.e('postComments', (function() {
+            return this.next();
+          }), function() {
+            this.e('postCommentsButtonTextCount', (function() {
+              return this.find('[role="button"] + div > [role="button"]');
+            }), function() {
+              this.e('postCommentsButtonTextCountNumber', (function() {
+                return this.children(':eq(0)');
+              }));
+              this.e('postCommentsButtonTextCountWord', (function() {
+                return this.children(':eq(1)');
+              }));
+              return this.e('postCommentsButtonText', (function() {
+                return this.parent();
+              }), function() {
+                this.e('postCommentsButtonTextNames', (function() {
+                  return this.children(':eq(1)');
+                }), function() {
+                  return this.e('postCommentsButtonTextNamesText_c', (function() {
+                    return this.children();
+                  }), function() {
+                    return this.combo('postCommentsButtonTextNamesText', '%postCommentsButtonTextNames > %postCommentsButtonTextNamesText_c');
+                  });
+                });
+                return this.e('postCommentsButtonChevron_c', {
+                  ssFilter: SS_postCommentsButtonChevronWouldCollapse
+                }, (function() {
+                  return this.prev();
+                }), function() {
+                  return this.e('postCommentsToggler', {
+                    ssFilter: {
+                      postCommentsTogglerIsGrayed: SS_postCommentsTogglerIsGrayed
+                    }
+                  }, (function() {
+                    return this.parent();
+                  }), function() {
+                    this.combo('postCommentsButtonChevron', '%postCommentsToggler > %postCommentsButtonChevron_c');
+                    return this.e('postCommentsList', (function() {
+                      return this.next();
+                    }), function() {
+                      this.e('postCommentsOlderButton', (function() {
+                        return this.children('[role="button"]:eq(0)');
+                      }));
+                      return this.e('postCommentsStream', (function() {
+                        return this.children(':eq(1)');
+                      }), function() {
+                        return this.e('postComment', {
+                          warnMany: false
+                        }, (function() {
+                          return this.children('[id]');
+                        }), function() {
+                          return this.e('postCommentUserAvatarImg_c', {
+                            warnDuplicate: false
+                          }, (function() {
+                            return this.find('img[alt]');
+                          }), function() {
+                            return this.e('postCommentUserAvatarA_c', {
+                              warnDuplicate: false
+                            }, (function() {
+                              return this.parent('a[href^="/"][oid]');
+                            }), function() {
+                              return this.e('postCommentContainer', (function() {
+                                return this.parent();
+                              }), function() {
+                                this.combo('postCommentUserAvatarA', '%postCommentContainer > %postCommentUserAvatarA_c');
+                                this.combo('postCommentUserAvatarImg', '%postCommentUserAvatarA > %postCommentUserAvatarImg_c');
+                                this.combo('postCommentContent', '%postCommentContainer > div:nth-child(2)');
+                                this.e('postCommentUserNameA_c', {
+                                  warnDuplicate: false
+                                }, (function() {
+                                  return this.find('> div:nth-child(2) > a[href^="/"][oid]');
+                                }), function() {
+                                  this.combo('postCommentUserNameA', '%postCommentContainer > div:nth-child(2) > %postCommentUserNameA_c');
+                                  return this.e('postCommentUserNameDelimiter', (function() {
+                                    return this.next('span');
+                                  }), function() {
+                                    return this.e('postCommentContentText', (function() {
+                                      return this.next('span');
+                                    }), function() {});
+                                  });
+                                });
+                                this.e('postCommentContentExpandButton', {
+                                  warnNoElement: false
+                                }, (function() {
+                                  return this.children('[role="button"]:contains(»)');
+                                }), function() {
+                                  return this.e('postCommentContentExpandable', {
+                                    warnNoElement: false,
+                                    ssFilter: {
+                                      postCommentContentExpandableIsCollapsed: SS_postCommentContentExpandableIsCollapsed
+                                    }
+                                  }, (function() {
+                                    return this.prev();
+                                  }), void 0, function() {
+                                    return this.ss({
+                                      postCommentContentExpandableIsCollapsed: SS_postCommentContentExpandableIsCollapsed
+                                    });
+                                  });
+                                });
+                                this.e('postCommentContentCollapseButton', {
+                                  warnNoElement: false
+                                }, (function() {
+                                  return this.children('[role="button"]:not(:contains(»))');
+                                }));
+                                this.e('postCommentLeftBorder', {
+                                  warnNoElement: false
+                                }, (function() {
+                                  return this.prev();
+                                }));
+                                return this.e('postCommentManagement', {
+                                  warnNoElement: false
+                                }, (function() {
+                                  return this.next();
+                                }));
+                              });
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+            return this.e('postCommentsFooter', (function() {
+              return this.next();
+            }), function() {
+              this.e('postCommentsFooterChevron_c', {
+                warnDuplicate: false
+              }, (function() {
+                return this.children('span[role="button"]');
+              }), function() {
+                return this.combo('postCommentsFooterChevron', '%postCommentsFooter > %postCommentsFooterChevron_c');
+              });
+              return this.e('postCommentButton', (function() {
+                return this.children('div[role="button"]');
+              }));
+            });
+          });
+        });
+      });
+    });
+  }, function() {
+    this.ss({
+      postIsSelected: SS_postIsSelected
+    });
+    return this.ss({
+      postIsNew: SS_postIsNew
+    });
   });
 };
 
