@@ -1,7 +1,7 @@
 
 /****************************************************************************
  * GPlusX + WebXDK
- * File was combined by 'make' on Fri Sep 16 18:49:58 EST 2011.
+ * File was combined by 'make' on Fri Sep 16 19:10:43 EST 2011.
  ****************************************************************************/
 
  ;(function(window, $, undefined) { // Semicolon coz https://github.com/mootools/slick/wiki/IIFE
@@ -107,7 +107,7 @@ if (!this.Gplusx)
 
 /****************************************************************************
  * GPlusX mapping rules.
- * This section was compiled from CoffeeScript on Fri Sep 16 18:49:58 EST 2011.
+ * This section was compiled from CoffeeScript on Fri Sep 16 19:10:42 EST 2011.
  ****************************************************************************/
 
 
@@ -383,8 +383,8 @@ Gplusx.gplusxMappingRules = function() {
   this.e('gbarToolsProfileSwitch', '#gbmps');
   this.e('gbarToolsGear', '#gbg5');
   this.e('gbarToolsGearPullDown', '#gbd5');
+  this.e('searchForm', '#searchForm');
   this.e('searchBox', '#searchBox');
-  this.e('searchBoxInput', '#ozIdSearchBox');
   this.ss({
     gbarParentIsFixed: SS_gbarParentIsFixed
   });
@@ -805,7 +805,7 @@ Gplusx.gplusxMappingRules = function() {
               return this.e(key('postContent{}AttachmentLinkImage_c'), opt, (function() {
                 return this.next('[data-content-url]');
               }), function() {
-                return this.combo(key('postContent{}AttachmentLinkImageImg_c'), key('%postContent{}AttachmentLinkImage_c > img'));
+                return this.combo(key('postContent{}AttachmentLinkImageImg_c'), opt, key('%postContent{}AttachmentLinkImage_c > img'));
               });
             });
             return this.e(key('postContent{}AttachmentLink_c'), opt, (function() {
