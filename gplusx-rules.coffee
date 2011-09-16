@@ -46,8 +46,8 @@ Gplusx.gplusxMappingRules = ->
   #
 
   # These are used for both ssFilter and @ss
-  SS_gbarParentIsFixed = position: 'fixed', top: '0', width: '100%' # FIXME: need to handled media queries
-  SS_gplusBarIsFixed   = position: 'fixed', top: '', zIndex: '' # FIXME: need to handled media queries
+  SS_gbarParentIsFixed = position: 'fixed', top: '0', width: '100%', '!*': '' # FIXME: need to handled media queries
+  SS_gplusBarIsFixed   = position: 'fixed', top: '', zIndex: '', '!*': '' # FIXME: need to handled media queries
   SS_postIsSelected  = borderLeftColor: 'rgb(77, 144, 240)'
   SS_postIsNew       = borderLeftColor: 'rgb(167, 199, 247)'
   SS_postCommentContentExpandableIsCollapsed = overflow: 'hidden'
@@ -115,7 +115,7 @@ Gplusx.gplusxMappingRules = ->
       # Take the ancestor simple_selector_sequence from the selector with :hover
       # See shareIconsPhoto below -- difference here is we include the '.'
       sel.replace /^(?:.*,)?\s*(\.[^\s,]+)\s+[^\s,]+:hover\s*(?:,.*)?$/, '$1'
-  @ss makeChildShareIconNonHoverable2:
+  @ss {warnDuplicate: false}, makeChildShareIconNonHoverable2:
     backgroundImage: 'sharebox/sprite2'
     backgroundPositionY: '-239px'
   , (sel, key)->
@@ -196,7 +196,7 @@ Gplusx.gplusxMappingRules = ->
   @e 'gbarToolsGear', '#gbg5'
   @e 'gbarToolsGearPullDown', '#gbd5'
 
-  @e 'searchBox', '#search-box'
+  @e 'searchBox', '#searchBox'
   @e 'searchBoxInput', '#ozIdSearchBox'
 
   @ss gbarParentIsFixed: SS_gbarParentIsFixed
@@ -367,7 +367,112 @@ Gplusx.gplusxMappingRules = ->
         @e 'circleStreamMoreLoadingUnit', (-> @next()), ->
           @e 'circleStreamMoreLoadingText', (-> @children())
 
-  @ss hangoutLiveIcon: background: 'icon_live_active'
+  #
+  # Post Content, either original or shared
+  #
+
+  # This helper function generates 2 similar trees of rules, one for when the post is original, i.e. by the poster,
+  # or shared, i.e. by someone other than the poster.
+  genSlaves_postContentVariantEntry = (treeName)->
+    # Supplants part of the keyname with the treeName argument
+    key = (s)-> s.replace /\{\}/g, treeName
+    opt = if treeName == 'Original' then {} else {warnDuplicate: false}
+    optNoEl = if treeName == 'Original' then {warnNoElement: false} else {warnDuplicate: false, warnNoElement: false}
+
+    return ->
+      if treeName == 'Original'
+        @combo 'postContent', '%postBody > %postContent_c'
+      else if treeName == 'Shared'
+        @combo 'postContentShared', '%postContentSharedParent > %postContentShared_c'
+
+      # Strange, only an original post can be expandable.
+      #@e 'postContentExpandButton_c', {warnNoElement: false}, (-> @find('[role="button"]:contains(»)'))
+
+      # There can only be one level of share (and one level of recursion). So we don't need '{}' in this section
+      if treeName == 'Original'
+        # These can be anywhere, and we only need the first one
+        @e 'postContentProflinkWrapper', {warnMany: false}, (-> @find('.proflinkWrapper').first()), ->
+          @e 'postContentProflinkPrefix', (-> @children('span:eq(0)'))
+          @e 'postContentProflink', (-> @children('a[oid]'))
+
+        # postContentSharedParent: this is to be used to differentiate between posts that are original or shared.
+        # e.g., To get the text of a shared item,
+        #   $post.find('%postContentSharedParent %postContentSharedMessageText_c')
+        # To get the text of a non-shared item,
+        #   $post.find('%postContentSharedParent').length == 0 && $post.find('%postContentOriginalMessageText_c')
+        @e 'postContentSharedParent', (->
+          # TODO: In Webx, create method so that we get selector directly, e.g.
+          # @find(@ssSelector(borderLeft: '1px solid rgb(234, 234, 234)'))
+          @call fn_postContentSharedParent_
+          @children(@mappedSelector.postContentSharedParent_)
+        ), (->
+          @e 'postContentSharedHeading', (-> @prev()), ->
+            @e 'postContentSharedUserAvatarImg_c', {warnDuplicate: false}, (-> @children('img')), ->
+              @combo 'postContentSharedUserAvatarImg', '%postContentSharedHeading > %postContentSharedUserAvatarImg_c'
+              @e 'postContentSharedUserNameA', (-> @next('a[oid]'))
+
+            @e 'postContentSharedPrologue', (-> @prev()), ->
+              # postContentSharedPrologueText has no class name
+              @combo 'postContentSharedPrologueText', '%postContentSharedPrologue > div'
+              @e key('postContentSharedPrologueEdit_c'), (-> @filter(':visible').find('span:not(:visible)'))
+
+          @e 'postContentShared_c', {warnDuplicate: false}, (-> @children()), genSlaves_postContentVariantEntry 'Shared'
+        )
+
+      # postContent{}Message_c must not have any postContentSharedParent_ sibling (i.e. div with gray left border)
+      @e key('postContent{}Message_c'), opt, (->
+        @call fn_postContentSharedParent_
+        @children(@mappedSelector.postContentSharedParent_)
+        children = @children()
+        if children.filter(@mappedSelector.postContentSharedParent_).length then null else children.first()
+      ), ->
+        @e key('postContent{}MessageText_c'), opt, (-> @children().first()), ->
+          @e key('postContent{}MessageEdit_c'), {warnDuplicate: false}, (-> @filter(':visible').find('span:not(:visible)'))
+          @e key('postContent{}MessageExpandButton_c'), optNoEl, (-> @next('[role="button"]:contains(»)')), ->
+
+        @e key('postContent{}MessageCollapseButton_c'), optNoEl, (-> @next().children('[role="button"]')), ->
+          @e key('postContent{}MessageExpanded_c'), opt, (-> @parent()), ->
+            @e key('postContent{}MessageExpandedText_c'), optNoEl, (-> @children().first()), ->
+
+        @e key('postContent{}Attachment_c'), opt, (-> @next()), ->
+          @e key('postContent{}AttachmentLinkFavIcon_c'), opt, (-> @find('img[src*="favicons"]')), ->
+            @e key('postContent{}AttachmentLinkHeading_c'), opt, (-> @next()), ->
+              @e key('postContent{}AttachmentLinkTitleA_c'), $.extend({allClassNames: true}, opt), (-> @children('a'))
+              @e key('postContent{}AttachmentLinkImage_c'), opt, (-> @next('[data-content-url]')), ->
+                @combo key('postContent{}AttachmentLinkImageImg_c'), key '%postContent{}AttachmentLinkImage_c > img'
+
+            @e key('postContent{}AttachmentLink_c'), opt, (-> @parent()), ->
+              @e key('postContent{}AttachmentLinkFloatClear_c'), opt, (-> @children().last()), ->
+                # postContent{}AttachmentLinkSnippet: snippet is before the float, but neither the heading
+                # nor the image
+                @e key('postContent{}AttachmentLinkSnippet_c'), opt, (-> @prev(':not([data-content-url]):not(:has(a))'))
+
+          @e key('postContent{}AttachmentPhotoWrapper_c'), opt, (-> @find('> div > [data-content-url*="plus.google.com/photos"]')), ->
+            @combo key('postContent{}AttachmentPhotoImg_c'),  key '%postContent{}AttachmentPhotoWrapper_c > img'
+            @e key('postContent{}AttachmentPhoto_c'), opt, (-> @parent()), ->
+              @e key('postContent{}AttachmentPhotoFloatClear_c'), opt, (-> @children().last())
+
+          @e key('postContent{}AttachmentVideoPreview_c'), opt, (-> @find('> div > * > div[data-content-type*="shockwave"]')), ->
+            @combo key('postContent{}AttachmentVideoPreviewImg_c'), key '%postContent{}AttachmentVideoPreview_c > img'
+            # postContent{}AttachmentVideoIframe_c only appears after user hits play
+            @combo key('postContent{}AttachmentVideoIframe_c'), key '%postContent{}AttachmentVideoPreview_c > iframe'
+            @e key('postContent{}AttachmentVideoPreviewOverlay_c'), opt, (-> @children('div:last'))
+
+            @e key('postContent{}AttachmentVideoCaption_c'), opt, (-> @next()), ->
+              @combo key('postContent{}AttachmentVideoSourceA_c'), key '%postContent{}AttachmentVideoCaption_c > a:first-child'
+
+            @e key('postContent{}AttachmentVideoWrapper_c'), opt, (-> @parent()), ->
+              @e key('postContent{}AttachmentVideoHeading_c'), opt, (-> @prev()), ->
+                @e key('postContent{}AttachmentVideoTitleA_c'), $.extend({allClassNames: true}, opt), (-> @children('a'))
+              @e key('postContent{}AttachmentVideo_c'), opt, (-> @parent()), ->
+                @e key('postContent{}AttachmentVideoFloatClear_c'), opt, (-> @children().last())
+
+
+  #
+  # Post
+  #
+
+  @ss hangoutLiveIcon: background: 'icon_live_active', marginLeft: ''
   @ss hangoutJoinButton: backgroundColor: 'rgb(77, 144, 254)', borderColor: 'rgb(48, 121, 237)'
   # postIsMutedOrDeleted_d class doesn't appear until we meet a muted post.  So we defer.
   # To diffentiate between muted and deleted, use a more complex selector:
@@ -387,11 +492,11 @@ Gplusx.gplusxMappingRules = ->
     # Must be defined before the postMenuItemMute and postMenuItemUnmute rules.
     @ss postHeadInfoMuted: color: 'rgb(196, 43, 44)', '!fontSize': '', '!fontStyle': ''
   @call fn_postHeadInfoMuted
-  fn_postContentQuotedPost = ->
-    # postContentQuotedPost: used for postContentQuotedMessage
-    @ss postContentQuotedPost:
+  fn_postContentSharedParent_ = ->
+    # postContentSharedParent_: used for postContentQuotedMessage
+    @ss {warnDuplicate: false}, postContentSharedParent_:
       borderLeft:  '1px solid rgb(234, 234, 234)'
-  @call fn_postContentQuotedPost
+  @call fn_postContentSharedParent_
 
   # Post ID prefix is unlikely to change
   # Note that posts can be found in many places: main stream, games stream, notifications
@@ -468,12 +573,12 @@ Gplusx.gplusxMappingRules = ->
       # postHead: excludes avatar and menu icon
       @e 'postHead', (-> @parent()), ->
         @e 'postMenuButton', (-> @children('[role="button"]'))
-        @e 'postUserAvatarA_c', (-> @children('a[href^="/"][oid]')), ->
+        @e 'postUserAvatarA_c', (-> @children('a[oid]')), ->
           @combo 'postUserAvatarA', '%postHead > %postUserAvatarA_c'
           @e 'postUserAvatarImg_c', (-> @children('img')), ->
             @combo 'postUserAvatarImg', '%postUserAvatarA > %postUserAvatarImg_c'
 
-        @e 'postUserNameA_c', (-> @find('div:eq(0) a[href^="/"][oid]')), ->
+        @e 'postUserNameA_c', (-> @find('div:eq(0) a[oid]')), ->
           @e 'postUserName', (-> @parent()), ->
             @combo 'postUserNameA', '%postUserName > postUserNameA_c'
             @e 'postHeadInfo', (-> @next()), ->
@@ -487,17 +592,7 @@ Gplusx.gplusxMappingRules = ->
 
         @e 'postContainer', (-> @parent())
         @e 'postBody', (-> @next()), ->
-          @e 'postContent', (-> @children(':first')), ->
-            @e 'postContentExpandButton', {warnNoElement: false}, (-> @find('[role="button"]:contains(»)'))
-
-            @e 'postContentShareMessage', (-> @children(':first')), ->
-              @e 'postContentShareMessageEdit', (-> @filter(':visible').find('span:not(:visible)'))
-
-            @e 'postContentQuotedMessage', ->
-              @call fn_postContentQuotedPost
-              @find(@mappedSelector.postContentQuotedPost)
-            , ->
-              # TODO
+          @e 'postContent_c', (-> @children(':first')), genSlaves_postContentVariantEntry 'Original'
 
           @e 'postPlusOneButton', {alt: 'button[id][g\\:entity]'}, (-> @find('button[id][g\\:entity]')), ->
             @e 'postActionBar', (-> @parent()), ->
@@ -526,7 +621,7 @@ Gplusx.gplusxMappingRules = ->
                           # postCommentUserAvatarImg_c is the anchor for postCommentContainer because
                           # postCommentContainer may or may not have siblings.
                           @e 'postCommentUserAvatarImg_c', {warnDuplicate: false}, (-> @find('img[alt]')), ->
-                            @e 'postCommentUserAvatarA_c', {warnDuplicate: false}, (-> @parent('a[href^="/"][oid]')), ->
+                            @e 'postCommentUserAvatarA_c', {warnDuplicate: false}, (-> @parent('a[oid]')), ->
                               @e 'postCommentContainer', (-> @parent()), ->
                                 @combo 'postCommentUserAvatarA', '%postCommentContainer > %postCommentUserAvatarA_c'
                                 @combo 'postCommentUserAvatarImg', '%postCommentUserAvatarA > %postCommentUserAvatarImg_c'

@@ -1,7 +1,7 @@
 
 /****************************************************************************
  * GPlusX + WebXDK
- * File was combined by 'make' on Mon Sep 12 20:22:51 EST 2011.
+ * File was combined by 'make' on Wed Sep 14 02:05:04 EST 2011.
  ****************************************************************************/
 
  ;(function(window, $, undefined) { // Semicolon coz https://github.com/mootools/slick/wiki/IIFE
@@ -107,7 +107,7 @@ if (!this.Gplusx)
 
 /****************************************************************************
  * GPlusX mapping rules.
- * This section was compiled from CoffeeScript on Mon Sep 12 20:22:51 EST 2011.
+ * This section was compiled from CoffeeScript on Wed Sep 14 02:05:00 EST 2011.
  ****************************************************************************/
 
 
@@ -129,16 +129,18 @@ Gplusx.gplusxMappingRulesForId = function() {
   });
 };
 Gplusx.gplusxMappingRules = function() {
-  var SS_gbarParentIsFixed, SS_gbarToolsNotificationUnitBgZero, SS_gbarToolsNotificationUnitFgZero, SS_gplusBarIsFixed, SS_postCommentContentExpandableIsCollapsed, SS_postCommentsButtonChevronWouldCollapse, SS_postCommentsTogglerIsGrayed, SS_postIsNew, SS_postIsSelected, fn_makeChildShareIconHoverable2_, fn_postContentQuotedPost, fn_postHeadInfoMuted, simpleSelectorForShareIcon;
+  var SS_gbarParentIsFixed, SS_gbarToolsNotificationUnitBgZero, SS_gbarToolsNotificationUnitFgZero, SS_gplusBarIsFixed, SS_postCommentContentExpandableIsCollapsed, SS_postCommentsButtonChevronWouldCollapse, SS_postCommentsTogglerIsGrayed, SS_postIsNew, SS_postIsSelected, fn_makeChildShareIconHoverable2_, fn_postContentSharedParent_, fn_postHeadInfoMuted, genSlaves_postContentVariantEntry, simpleSelectorForShareIcon;
   SS_gbarParentIsFixed = {
     position: 'fixed',
     top: '0',
-    width: '100%'
+    width: '100%',
+    '!*': ''
   };
   SS_gplusBarIsFixed = {
     position: 'fixed',
     top: '',
-    zIndex: ''
+    zIndex: '',
+    '!*': ''
   };
   SS_postIsSelected = {
     borderLeftColor: 'rgb(77, 144, 240)'
@@ -222,6 +224,8 @@ Gplusx.gplusxMappingRules = function() {
     });
   };
   this.ss({
+    warnDuplicate: false
+  }, {
     makeChildShareIconNonHoverable2: {
       backgroundImage: 'sharebox/sprite2',
       backgroundPositionY: '-239px'
@@ -684,9 +688,192 @@ Gplusx.gplusxMappingRules = function() {
       });
     });
   });
+  genSlaves_postContentVariantEntry = function(treeName) {
+    var key, opt, optNoEl;
+    key = function(s) {
+      return s.replace(/\{\}/g, treeName);
+    };
+    opt = treeName === 'Original' ? {} : {
+      warnDuplicate: false
+    };
+    optNoEl = treeName === 'Original' ? {
+      warnNoElement: false
+    } : {
+      warnDuplicate: false,
+      warnNoElement: false
+    };
+    return function() {
+      if (treeName === 'Original') {
+        this.combo('postContent', '%postBody > %postContent_c');
+      } else if (treeName === 'Shared') {
+        this.combo('postContentShared', '%postContentSharedParent > %postContentShared_c');
+      }
+      if (treeName === 'Original') {
+        this.e('postContentProflinkWrapper', {
+          warnMany: false
+        }, (function() {
+          return this.find('.proflinkWrapper').first();
+        }), function() {
+          this.e('postContentProflinkPrefix', (function() {
+            return this.children('span:eq(0)');
+          }));
+          return this.e('postContentProflink', (function() {
+            return this.children('a[oid]');
+          }));
+        });
+        this.e('postContentSharedParent', (function() {
+          this.call(fn_postContentSharedParent_);
+          return this.children(this.mappedSelector.postContentSharedParent_);
+        }), (function() {
+          this.e('postContentSharedHeading', (function() {
+            return this.prev();
+          }), function() {
+            this.e('postContentSharedUserAvatarImg_c', {
+              warnDuplicate: false
+            }, (function() {
+              return this.children('img');
+            }), function() {
+              this.combo('postContentSharedUserAvatarImg', '%postContentSharedHeading > %postContentSharedUserAvatarImg_c');
+              return this.e('postContentSharedUserNameA', (function() {
+                return this.next('a[oid]');
+              }));
+            });
+            return this.e('postContentSharedPrologue', (function() {
+              return this.prev();
+            }), function() {
+              this.combo('postContentSharedPrologueText', '%postContentSharedPrologue > div');
+              return this.e(key('postContentSharedPrologueEdit_c'), (function() {
+                return this.filter(':visible').find('span:not(:visible)');
+              }));
+            });
+          });
+          return this.e('postContentShared_c', {
+            warnDuplicate: false
+          }, (function() {
+            return this.children();
+          }), genSlaves_postContentVariantEntry('Shared'));
+        }));
+      }
+      return this.e(key('postContent{}Message_c'), opt, (function() {
+        var children;
+        this.call(fn_postContentSharedParent_);
+        this.children(this.mappedSelector.postContentSharedParent_);
+        children = this.children();
+        if (children.filter(this.mappedSelector.postContentSharedParent_).length) {
+          return null;
+        } else {
+          return children.first();
+        }
+      }), function() {
+        this.e(key('postContent{}MessageText_c'), opt, (function() {
+          return this.children().first();
+        }), function() {
+          this.e(key('postContent{}MessageEdit_c'), {
+            warnDuplicate: false
+          }, (function() {
+            return this.filter(':visible').find('span:not(:visible)');
+          }));
+          return this.e(key('postContent{}MessageExpandButton_c'), optNoEl, (function() {
+            return this.next('[role="button"]:contains(»)');
+          }), function() {});
+        });
+        this.e(key('postContent{}MessageCollapseButton_c'), optNoEl, (function() {
+          return this.next().children('[role="button"]');
+        }), function() {
+          return this.e(key('postContent{}MessageExpanded_c'), opt, (function() {
+            return this.parent();
+          }), function() {
+            return this.e(key('postContent{}MessageExpandedText_c'), optNoEl, (function() {
+              return this.children().first();
+            }), function() {});
+          });
+        });
+        return this.e(key('postContent{}Attachment_c'), opt, (function() {
+          return this.next();
+        }), function() {
+          this.e(key('postContent{}AttachmentLinkFavIcon_c'), opt, (function() {
+            return this.find('img[src*="favicons"]');
+          }), function() {
+            this.e(key('postContent{}AttachmentLinkHeading_c'), opt, (function() {
+              return this.next();
+            }), function() {
+              this.e(key('postContent{}AttachmentLinkTitleA_c'), $.extend({
+                allClassNames: true
+              }, opt), (function() {
+                return this.children('a');
+              }));
+              return this.e(key('postContent{}AttachmentLinkImage_c'), opt, (function() {
+                return this.next('[data-content-url]');
+              }), function() {
+                return this.combo(key('postContent{}AttachmentLinkImageImg_c'), key('%postContent{}AttachmentLinkImage_c > img'));
+              });
+            });
+            return this.e(key('postContent{}AttachmentLink_c'), opt, (function() {
+              return this.parent();
+            }), function() {
+              return this.e(key('postContent{}AttachmentLinkFloatClear_c'), opt, (function() {
+                return this.children().last();
+              }), function() {
+                return this.e(key('postContent{}AttachmentLinkSnippet_c'), opt, (function() {
+                  return this.prev(':not([data-content-url]):not(:has(a))');
+                }));
+              });
+            });
+          });
+          this.e(key('postContent{}AttachmentPhotoWrapper_c'), opt, (function() {
+            return this.find('> div > [data-content-url*="plus.google.com/photos"]');
+          }), function() {
+            this.combo(key('postContent{}AttachmentPhotoImg_c'), key('%postContent{}AttachmentPhotoWrapper_c > img'));
+            return this.e(key('postContent{}AttachmentPhoto_c'), opt, (function() {
+              return this.parent();
+            }), function() {
+              return this.e(key('postContent{}AttachmentPhotoFloatClear_c'), opt, (function() {
+                return this.children().last();
+              }));
+            });
+          });
+          return this.e(key('postContent{}AttachmentVideoPreview_c'), opt, (function() {
+            return this.find('> div > * > div[data-content-type*="shockwave"]');
+          }), function() {
+            this.combo(key('postContent{}AttachmentVideoPreviewImg_c'), key('%postContent{}AttachmentVideoPreview_c > img'));
+            this.combo(key('postContent{}AttachmentVideoIframe_c'), key('%postContent{}AttachmentVideoPreview_c > iframe'));
+            this.e(key('postContent{}AttachmentVideoPreviewOverlay_c'), opt, (function() {
+              return this.children('div:last');
+            }));
+            this.e(key('postContent{}AttachmentVideoCaption_c'), opt, (function() {
+              return this.next();
+            }), function() {
+              return this.combo(key('postContent{}AttachmentVideoSourceA_c'), key('%postContent{}AttachmentVideoCaption_c > a:first-child'));
+            });
+            return this.e(key('postContent{}AttachmentVideoWrapper_c'), opt, (function() {
+              return this.parent();
+            }), function() {
+              this.e(key('postContent{}AttachmentVideoHeading_c'), opt, (function() {
+                return this.prev();
+              }), function() {
+                return this.e(key('postContent{}AttachmentVideoTitleA_c'), $.extend({
+                  allClassNames: true
+                }, opt), (function() {
+                  return this.children('a');
+                }));
+              });
+              return this.e(key('postContent{}AttachmentVideo_c'), opt, (function() {
+                return this.parent();
+              }), function() {
+                return this.e(key('postContent{}AttachmentVideoFloatClear_c'), opt, (function() {
+                  return this.children().last();
+                }));
+              });
+            });
+          });
+        });
+      });
+    };
+  };
   this.ss({
     hangoutLiveIcon: {
-      background: 'icon_live_active'
+      background: 'icon_live_active',
+      marginLeft: ''
     }
   });
   this.ss({
@@ -719,14 +906,16 @@ Gplusx.gplusxMappingRules = function() {
     });
   };
   this.call(fn_postHeadInfoMuted);
-  fn_postContentQuotedPost = function() {
+  fn_postContentSharedParent_ = function() {
     return this.ss({
-      postContentQuotedPost: {
+      warnDuplicate: false
+    }, {
+      postContentSharedParent_: {
         borderLeft: '1px solid rgb(234, 234, 234)'
       }
     });
   };
-  this.call(fn_postContentQuotedPost);
+  this.call(fn_postContentSharedParent_);
   this.e('post', {
     warnMany: false,
     alt: '[id^="update-"]',
@@ -803,7 +992,7 @@ Gplusx.gplusxMappingRules = function() {
           return this.children('[role="button"]');
         }));
         this.e('postUserAvatarA_c', (function() {
-          return this.children('a[href^="/"][oid]');
+          return this.children('a[oid]');
         }), function() {
           this.combo('postUserAvatarA', '%postHead > %postUserAvatarA_c');
           return this.e('postUserAvatarImg_c', (function() {
@@ -813,7 +1002,7 @@ Gplusx.gplusxMappingRules = function() {
           });
         });
         this.e('postUserNameA_c', (function() {
-          return this.find('div:eq(0) a[href^="/"][oid]');
+          return this.find('div:eq(0) a[oid]');
         }), function() {
           return this.e('postUserName', (function() {
             return this.parent();
@@ -849,26 +1038,9 @@ Gplusx.gplusxMappingRules = function() {
         return this.e('postBody', (function() {
           return this.next();
         }), function() {
-          this.e('postContent', (function() {
+          this.e('postContent_c', (function() {
             return this.children(':first');
-          }), function() {
-            this.e('postContentExpandButton', {
-              warnNoElement: false
-            }, (function() {
-              return this.find('[role="button"]:contains(»)');
-            }));
-            this.e('postContentShareMessage', (function() {
-              return this.children(':first');
-            }), function() {
-              return this.e('postContentShareMessageEdit', (function() {
-                return this.filter(':visible').find('span:not(:visible)');
-              }));
-            });
-            return this.e('postContentQuotedMessage', function() {
-              this.call(fn_postContentQuotedPost);
-              return this.find(this.mappedSelector.postContentQuotedPost);
-            }, function() {});
-          });
+          }), genSlaves_postContentVariantEntry('Original'));
           this.e('postPlusOneButton', {
             alt: 'button[id][g\\:entity]'
           }, (function() {
@@ -948,7 +1120,7 @@ Gplusx.gplusxMappingRules = function() {
                             return this.e('postCommentUserAvatarA_c', {
                               warnDuplicate: false
                             }, (function() {
-                              return this.parent('a[href^="/"][oid]');
+                              return this.parent('a[oid]');
                             }), function() {
                               return this.e('postCommentContainer', (function() {
                                 return this.parent();
