@@ -1,7 +1,7 @@
 
 /****************************************************************************
  * GPlusX + WebXDK
- * File was combined by 'make' on Wed Sep 14 02:05:04 EST 2011.
+ * File was combined by 'make' on Fri Sep 16 18:49:58 EST 2011.
  ****************************************************************************/
 
  ;(function(window, $, undefined) { // Semicolon coz https://github.com/mootools/slick/wiki/IIFE
@@ -107,7 +107,7 @@ if (!this.Gplusx)
 
 /****************************************************************************
  * GPlusX mapping rules.
- * This section was compiled from CoffeeScript on Wed Sep 14 02:05:00 EST 2011.
+ * This section was compiled from CoffeeScript on Fri Sep 16 18:49:58 EST 2011.
  ****************************************************************************/
 
 
@@ -383,7 +383,7 @@ Gplusx.gplusxMappingRules = function() {
   this.e('gbarToolsProfileSwitch', '#gbmps');
   this.e('gbarToolsGear', '#gbg5');
   this.e('gbarToolsGearPullDown', '#gbd5');
-  this.e('searchBox', '#search-box');
+  this.e('searchBox', '#searchBox');
   this.e('searchBoxInput', '#ozIdSearchBox');
   this.ss({
     gbarParentIsFixed: SS_gbarParentIsFixed
@@ -873,7 +873,13 @@ Gplusx.gplusxMappingRules = function() {
   this.ss({
     hangoutLiveIcon: {
       background: 'icon_live_active',
-      marginLeft: ''
+      width: '48px'
+    }
+  });
+  this.ss({
+    hangoutLiveInactiveIcon: {
+      background: 'icon_live_active',
+      width: '22px'
     }
   });
   this.ss({

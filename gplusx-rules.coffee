@@ -55,6 +55,7 @@ Gplusx.gplusxMappingRules = ->
   # These are just used for ssFilter
   SS_gbarToolsNotificationUnitBgZero = backgroundPosition: '-26px'
   SS_gbarToolsNotificationUnitFgZero = color: 'rgb(153, 153, 153)'
+  # FIXME
   SS_postCommentsTogglerIsGrayed =
     color: 'rgb(153, 153, 153)'
     '!*': ''
@@ -196,8 +197,8 @@ Gplusx.gplusxMappingRules = ->
   @e 'gbarToolsGear', '#gbg5'
   @e 'gbarToolsGearPullDown', '#gbd5'
 
+  @e 'searchForm', '#searchForm'
   @e 'searchBox', '#searchBox'
-  @e 'searchBoxInput', '#ozIdSearchBox'
 
   @ss gbarParentIsFixed: SS_gbarParentIsFixed
   @ss gplusBarIsFixed: SS_gplusBarIsFixed
@@ -439,7 +440,7 @@ Gplusx.gplusxMappingRules = ->
             @e key('postContent{}AttachmentLinkHeading_c'), opt, (-> @next()), ->
               @e key('postContent{}AttachmentLinkTitleA_c'), $.extend({allClassNames: true}, opt), (-> @children('a'))
               @e key('postContent{}AttachmentLinkImage_c'), opt, (-> @next('[data-content-url]')), ->
-                @combo key('postContent{}AttachmentLinkImageImg_c'), key '%postContent{}AttachmentLinkImage_c > img'
+                @combo key('postContent{}AttachmentLinkImageImg_c'), opt, key '%postContent{}AttachmentLinkImage_c > img'
 
             @e key('postContent{}AttachmentLink_c'), opt, (-> @parent()), ->
               @e key('postContent{}AttachmentLinkFloatClear_c'), opt, (-> @children().last()), ->
@@ -472,7 +473,8 @@ Gplusx.gplusxMappingRules = ->
   # Post
   #
 
-  @ss hangoutLiveIcon: background: 'icon_live_active', marginLeft: ''
+  @ss hangoutLiveIcon: background: 'icon_live_active', width: '48px'
+  @ss hangoutLiveInactiveIcon: background: 'icon_live_active', width: '22px'
   @ss hangoutJoinButton: backgroundColor: 'rgb(77, 144, 254)', borderColor: 'rgb(48, 121, 237)'
   # postIsMutedOrDeleted_d class doesn't appear until we meet a muted post.  So we defer.
   # To diffentiate between muted and deleted, use a more complex selector:
